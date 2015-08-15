@@ -1,0 +1,14 @@
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\LIBSVM_COPYRIGHT
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\Dataset\wine.txt
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\Model\wine_model.txt
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\LibSVMsharp.Examples.Classification.exe.config
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\LibSVMsharp.Examples.Classification.exe
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\LibSVMsharp.Examples.Classification.pdb
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\LibSVMsharp.dll
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\LibSVMsharp.pdb
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\obj\Debug\LibSVMsharp.Examples.Classification.csprojResolveAssemblyReference.cache
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\obj\Debug\LibSVMsharp.Examples.Classification.exe
+C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\obj\Debug\LibSVMsharp.Examples.Classification.pdb
+C:\Users\America\Documents\Versiones Modificadas Sistema\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\bin\Debug\LibSVMsharp.Examples.Classification.exe.config
+C:\Users\America\Documents\Versiones Modificadas Sistema\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\obj\Debug\LibSVMsharp.Examples.Classification.exe
+C:\Users\America\Documents\Versiones Modificadas Sistema\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.Classification\obj\Debug\LibSVMsharp.Examples.Classification.pdb
