@@ -9,3 +9,9 @@ C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\bi
 C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\obj\Debug\LibSVMsharp.dll
 C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\obj\Debug\LibSVMsharp.pdb
 C:\Users\America\Documents\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\obj\Debug\LibSVMsharp.csprojResolveAssemblyReference.cache
+C:\Users\America\Documents\SystemVersions\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\bin\Debug\LIBSVM_COPYRIGHT
+C:\Users\America\Documents\SystemVersions\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\bin\Debug\LibSVMsharp.dll
+C:\Users\America\Documents\SystemVersions\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\bin\Debug\LibSVMsharp.pdb
+C:\Users\America\Documents\SystemVersions\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\obj\Debug\LibSVMsharp.csprojResolveAssemblyReference.cache
+C:\Users\America\Documents\SystemVersions\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\obj\Debug\LibSVMsharp.dll
+C:\Users\America\Documents\SystemVersions\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp\obj\Debug\LibSVMsharp.pdb

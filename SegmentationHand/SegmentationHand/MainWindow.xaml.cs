@@ -67,6 +67,43 @@ namespace SegmentationHand
         //the binarization is inspired in NiBlanck banarization, but in this case, we use just the average of the image. 
         //openinOperation() remove the noise of the binarized image, using morphological operation, we use opening. 
 
+        private Image<Gray, Byte> binaryNiBlack(Image<Gray,Byte> handFrame)
+        {
+            int widthFrame = handFrame.Width; 
+            int heigthFrame = handFrame.Height;
+            Image<Gray, Byte> binaryFrame = handFrame.Clone();
+            //Image<Gray, Byte> binaryFrame = new Image<Gray,Byte>(widthFrame,heigthFrame);
+            
+            int sizeSW = 20; //Size of the slinding window 
+            double k = 1;
+            
+            for (int i = 0; i < widthFrame; i += sizeSW)
+            {
+                for (int j = 0; j < heigthFrame; j += sizeSW)
+                {   
+                    Gray media;
+                    MCvScalar desest;
+                    MCvScalar mediaValue;
+                    double threshold;  
+
+                    Image<Gray, Byte> imageCalculate = new Image<Gray,Byte>(sizeSW,sizeSW); 
+                    Rectangle rect = new Rectangle(i,j,sizeSW,sizeSW);
+                    
+                    binaryFrame.ROI = rect;
+                    imageCalculate.Copy(binaryFrame.ROI);
+                    imageCalculate.AvgSdv(out media, out desest);
+                    mediaValue = media.MCvScalar;
+
+                    threshold = mediaValue.v0 + (k * desest.v0);
+
+                    imageCalculate._ThresholdBinary(new Gray(threshold), new Gray(255));         
+                }
+            }
+
+
+            return binaryFrame; 
+        }
+
         private Image<Gray, Byte> binaryThresholdNiBlack(Image<Gray, Byte> handImage)
         {
             Gray media;
@@ -139,6 +176,7 @@ namespace SegmentationHand
 
             //frameRoi.Save(path1 + "W13_" + numFrames.ToString() + ".png");
             frameRoi = binaryThresholdNiBlack(frameRoi);
+            frameRoi = binaryNiBlack(frameRoi); 
             //frameRoi.Save(path2 + numFrames.ToString() + "O.png");  
 
             using (MemStorage storage = new MemStorage())
