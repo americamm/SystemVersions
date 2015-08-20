@@ -74,7 +74,7 @@ namespace SegmentationHand
             byte[, ,] byteData = handFrame.Data; 
             Image<Gray, Byte> binaryFrame = handFrame.Clone();  
             //CvArray<Byte>[,,] arrayData = byteData; 
-            int sizeSW = 20; //Size of the slinding window 
+            int sizeSW = 50; //Size of the slinding window 
             double k = 1;
             
             /*for (int i = 0; i < widthFrame; i += sizeSW)
@@ -99,22 +99,27 @@ namespace SegmentationHand
 
                     imageCalculate._ThresholdBinary(new Gray(threshold), new Gray(255));         
                 }
-            }*/ 
-
+            }*/
+            int index = 0;
             for (int i = 0; i < heigthFrame; i += sizeSW)
             {
                 for (int j = 0; j < widthFrame; j += sizeSW)
                 {   
+                    
+
                     Gray media;
                     MCvScalar desest;
                     MCvScalar mediaValue;
                     double threshold;
 
 
+                    Image<Gray, Byte> see = new Image<Gray,Byte>(widthFrame,heigthFrame); 
+
                     byte[, ,] calculationArray = new byte[sizeSW, sizeSW, 1];
 
-                    Array.Copy(byteData, j, calculationArray, 0, sizeSW * sizeSW); 
+                    Array.Copy(byteData, index, calculationArray, 0, sizeSW * sizeSW);
 
+                    see.Data = byteData; 
                      
 
                     Image<Gray, Byte> imageCalculate = new Image<Gray,Byte>(sizeSW,sizeSW);
@@ -126,12 +131,14 @@ namespace SegmentationHand
                     //binaryFrame.ROI = rect;
                     //imageCalculate.Copy(binaryFrame.ROI);
                     //int a = 5;
-                    //imageCalculate.AvgSdv(out media, out desest);
-                    //mediaValue = media.MCvScalar;
+                    imageCalculate.AvgSdv(out media, out desest);
+                    mediaValue = media.MCvScalar;
 
-                    //threshold = mediaValue.v0 + (k * desest.v0);
+                    threshold = mediaValue.v0 + (k * desest.v0);
 
-                    //imageCalculate._ThresholdBinary(new Gray(threshold), new Gray(255));         
+                    imageCalculate._ThresholdBinary(new Gray(threshold), new Gray(255));
+
+                    index = i+j+ 1 + (sizeSW * sizeSW); 
                 }
             }
 
@@ -210,7 +217,7 @@ namespace SegmentationHand
             //PointF centerPalm; 
 
             //frameRoi.Save(path1 + "W13_" + numFrames.ToString() + ".png");
-            frameRoi = binaryThresholdNiBlack(frameRoi);
+            //frameRoi = binaryThresholdNiBlack(frameRoi);
             frameRoi = binaryNiBlack(frameRoi); 
             //frameRoi.Save(path2 + numFrames.ToString() + "O.png");  
 
