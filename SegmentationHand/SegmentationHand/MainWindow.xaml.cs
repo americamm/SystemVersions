@@ -71,13 +71,14 @@ namespace SegmentationHand
         {
             int widthFrame = handFrame.Width; 
             int heigthFrame = handFrame.Height;
-            Image<Gray, Byte> binaryFrame = handFrame.Clone();
+            byte[, ,] byteData = handFrame.Data; 
+            Image<Gray, Byte> binaryFrame = handFrame.Clone(); 
             //Image<Gray, Byte> binaryFrame = new Image<Gray,Byte>(widthFrame,heigthFrame);
             
             int sizeSW = 20; //Size of the slinding window 
             double k = 1;
             
-            for (int i = 0; i < widthFrame; i += sizeSW)
+            /*for (int i = 0; i < widthFrame; i += sizeSW)
             {
                 for (int j = 0; j < heigthFrame; j += sizeSW)
                 {   
@@ -91,12 +92,43 @@ namespace SegmentationHand
                     
                     binaryFrame.ROI = rect;
                     imageCalculate.Copy(binaryFrame.ROI);
+                    int a = 5;
                     imageCalculate.AvgSdv(out media, out desest);
                     mediaValue = media.MCvScalar;
 
                     threshold = mediaValue.v0 + (k * desest.v0);
 
                     imageCalculate._ThresholdBinary(new Gray(threshold), new Gray(255));         
+                }
+            }*/ 
+
+            for (int i = 0; i < heigthFrame; i += sizeSW)
+            {
+                for (int j = 0; j < widthFrame; j += sizeSW)
+                {   
+                    //Gray media;
+                    //MCvScalar desest;
+                    //MCvScalar mediaValue;
+                    double threshold;
+
+                    byte[, ,] calculationArray = new byte[sizeSW, sizeSW, 1];
+
+                    Array.Copy(byteData, j, calculationArray, 0, sizeSW * sizeSW); 
+
+                    CvArray 
+
+                    //Image<Gray, Byte> imageCalculate = new Image<Gray,Byte>(sizeSW,sizeSW); 
+                    //Rectangle rect = new Rectangle(i,j,sizeSW,sizeSW);
+                    
+                    //binaryFrame.ROI = rect;
+                    //imageCalculate.Copy(binaryFrame.ROI);
+                    //int a = 5;
+                    //imageCalculate.AvgSdv(out media, out desest);
+                    //mediaValue = media.MCvScalar;
+
+                    //threshold = mediaValue.v0 + (k * desest.v0);
+
+                    //imageCalculate._ThresholdBinary(new Gray(threshold), new Gray(255));         
                 }
             }
 
