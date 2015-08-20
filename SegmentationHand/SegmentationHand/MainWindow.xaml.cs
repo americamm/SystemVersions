@@ -72,9 +72,8 @@ namespace SegmentationHand
             int widthFrame = handFrame.Width; 
             int heigthFrame = handFrame.Height;
             byte[, ,] byteData = handFrame.Data; 
-            Image<Gray, Byte> binaryFrame = handFrame.Clone(); 
-            //Image<Gray, Byte> binaryFrame = new Image<Gray,Byte>(widthFrame,heigthFrame);
-            
+            Image<Gray, Byte> binaryFrame = handFrame.Clone();  
+            //CvArray<Byte>[,,] arrayData = byteData; 
             int sizeSW = 20; //Size of the slinding window 
             double k = 1;
             
@@ -106,18 +105,22 @@ namespace SegmentationHand
             {
                 for (int j = 0; j < widthFrame; j += sizeSW)
                 {   
-                    //Gray media;
-                    //MCvScalar desest;
-                    //MCvScalar mediaValue;
+                    Gray media;
+                    MCvScalar desest;
+                    MCvScalar mediaValue;
                     double threshold;
+
 
                     byte[, ,] calculationArray = new byte[sizeSW, sizeSW, 1];
 
                     Array.Copy(byteData, j, calculationArray, 0, sizeSW * sizeSW); 
 
-                    CvArray 
+                     
 
-                    //Image<Gray, Byte> imageCalculate = new Image<Gray,Byte>(sizeSW,sizeSW); 
+                    Image<Gray, Byte> imageCalculate = new Image<Gray,Byte>(sizeSW,sizeSW);
+                    imageCalculate.Data = calculationArray; 
+
+                    //MCvBox2D box = new MCvBox2D();
                     //Rectangle rect = new Rectangle(i,j,sizeSW,sizeSW);
                     
                     //binaryFrame.ROI = rect;
