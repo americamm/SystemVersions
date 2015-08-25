@@ -37,9 +37,9 @@ namespace SegmentationHand
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization  
-        private string path1 = @"C:\CaptureKinect\Binarization\test2\frames\";
-        private string path2 = @"C:\CaptureKinect\Binarization\test2\binary\";
-        private string path3 = @"C:\CaptureKinect\Binarization\test2\convex\";
+        private string path1 = @"C:\CaptureKinect\Binarization\test5\frames\";
+        private string path2 = @"C:\CaptureKinect\Binarization\test5\binary\";
+        private string path3 = @"C:\CaptureKinect\Binarization\test5\convex\";
         private int numFrames = 1;
 
         public int numero;
@@ -61,8 +61,8 @@ namespace SegmentationHand
 
                 frameRoi = binaryNiBlack(frameRoi);
                 frameRoi.Save(path2 + numFrames.ToString() + ".png"); //Borrar ya que funcione
+                HandConvexHull(frameRoi); 
                 numFrames ++; 
-                //HandConvexHull(frameRoi); 
             }
         } //end WindowLoaded
 
@@ -75,69 +75,55 @@ namespace SegmentationHand
             int widthFrame = handFrame.Width; 
             int heigthFrame = handFrame.Height;
             
-            Image<Gray, Byte> binaryFrame = handFrame.Clone();
-            byte[, ,] byteData = binaryFrame.Data; 
-            
-            int sizeSW = 15; 
+            int sizeSW = 3; 
             int sizeSW_w = sizeSW; //Size of the slinding window 
             int sizeSW_h = sizeSW; //Size of the slinding window 
-            double k = 1;
-            
+            int halfWidth = (int)(Math.Floor((double)sizeSW/2));  
+            int halfHeigth = (int)(Math.Floor((double)sizeSW/2));
+            int binaryWidth = widthFrame + halfWidth*2;
+            int binaryHeigth = heigthFrame + halfHeigth*2; 
+            double k = 0.5;
 
-            for (int i = 0; i<heigthFrame; i++)
+
+            Image<Gray, Byte> binaryFrameCalculation = new Image<Gray, Byte>(binaryWidth,binaryHeigth);
+            binaryFrameCalculation.SetZero(); 
+            Rectangle roiHand = new Rectangle(halfWidth, halfHeigth, widthFrame,  heigthFrame);
+            binaryFrameCalculation.ROI = roiHand;
+            handFrame.CopyTo(binaryFrameCalculation);
+            binaryFrameCalculation.ROI = Rectangle.Empty;
+
+
+            byte[, ,] byteData = handFrame.Data; 
+            
+            
+            for (int i = halfHeigth; i<heigthFrame+halfHeigth; i++)
             {
-                for (int j = 0; j < widthFrame; j++ )
+                for (int j = halfWidth; j < widthFrame+halfWidth; j++)
                 {
                     Gray media;
                     MCvScalar desest;
                     MCvScalar mediaValue;
                     double threshold;
-
- 
-                    if ((heigthFrame - i) < sizeSW)
-                        sizeSW_h = Math.Abs(heigthFrame - i-1);
-
-
-                    if ((widthFrame - j) < sizeSW)
-                    {
-                        sizeSW_w = Math.Abs(widthFrame - j-1);
-                        /*if ( j==132)
-                        { 
-                            int b=5;
-                            //int c = byteData[j, i, 0]; 
-                        }
-                        //if (sizeSW_w == 2)
-                            //sizeSW_w = 1; */
-                    }
-
+                    MCvBox2D roi;          
 
                     Image<Gray, Byte> imageCalculate = new Image<Gray, Byte>(sizeSW_w, sizeSW_h);
-                    Rectangle rect = new Rectangle(j, i, sizeSW_w, sizeSW_h);
+                    roi = new MCvBox2D(new System.Drawing.Point(j, i), new System.Drawing.Size (sizeSW_w, sizeSW_h),0); 
 
-                    //Borrar una vez que salga dibujando la ventana
-                    //binaryFrame.Draw(rect,new Gray(255), 1);
-                    //binaryFrame.Save(path2 + j.ToString() +"_" + i.ToString() + ".png");
-
-                    binaryFrame = handFrame.Clone(); 
-                    imageCalculate = binaryFrame.Copy(rect);
-                    //imageCalculate = binaryFrame.GetSubRect(rect);
+                    imageCalculate = binaryFrameCalculation.Copy(roi);
+                    binaryFrameCalculation.ROI = Rectangle.Empty; 
                     imageCalculate.AvgSdv(out media, out desest);
                     mediaValue = media.MCvScalar;
                     threshold = mediaValue.v0 + (k * desest.v0);
 
-                    if (byteData[i, j, 0] < threshold)
-                        byteData[i, j, 0] = 255;
+                    if (byteData[i-halfHeigth, j-halfWidth, 0] < threshold)
+                        byteData[i-halfHeigth, j-halfWidth, 0] = 255;
                     else
-                        byteData[i, j, 0] = 0;
-          
-                    //byteData[i, j, 0] < threshold ? (byteData[i, j, 0] = 255) : (byteData[i, j, 0] = 0);
-                      
-                    //imageCalculate._ThresholdBinary(new Gray(threshold), new Gray(255));
+                        byteData[i-halfHeigth, j-halfWidth, 0] = 0;
                 }
             }
 
-            binaryFrame.Data = byteData; 
-            return binaryFrame; 
+            handFrame.Data = byteData; 
+            return handFrame; 
         }
 
         private Image<Gray, Byte> binaryThresholdNiBlack(Image<Gray, Byte> handImage)
@@ -212,7 +198,7 @@ namespace SegmentationHand
 
             //frameRoi.Save(path1 + "W13_" + numFrames.ToString() + ".png");
             //frameRoi = binaryThresholdNiBlack(frameRoi);
-            frameRoi = binaryNiBlack(frameRoi); 
+            //frameRoi = binaryNiBlack(frameRoi); 
             //frameRoi.Save(path2 + numFrames.ToString() + "O.png");  
 
             using (MemStorage storage = new MemStorage())
@@ -262,7 +248,7 @@ namespace SegmentationHand
                 }
             }
 
-            numFrames++;
+            //numFrames++;
 
             //return ListReturn;
         }//end HandConvexHull  
