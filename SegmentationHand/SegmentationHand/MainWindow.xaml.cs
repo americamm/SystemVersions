@@ -37,9 +37,10 @@ namespace SegmentationHand
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization  
-        private string path1 = @"C:\CaptureKinect\Binarization\test5\frames\";
-        private string path2 = @"C:\CaptureKinect\Binarization\test5\binary\";
-        private string path3 = @"C:\CaptureKinect\Binarization\test5\convex\";
+        private string path1 = @"C:\CaptureKinect\Binarization\test13\frames\";
+        private string path2 = @"C:\CaptureKinect\Binarization\test13\binary\";
+        private string path3 = @"C:\CaptureKinect\Binarization\test13\convex\";
+        private string path4 = @"C:\CaptureKinect\Binarization\test13\opening\";
         private int numFrames = 1;
 
         public int numero;
@@ -54,14 +55,30 @@ namespace SegmentationHand
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Image<Gray, Byte> frameRoi;
+            Image<Gray, Byte> openingImage; 
 
-            for (int i = 1; i < 49; i++)
+            for (int i = 1; i < 50; i++)
             {
                 frameRoi = new Image<Gray, Byte>(path1 + i.ToString() + ".png");
+                
+                openingImage = openingOperation(frameRoi);
+                openingImage.SmoothMedian(3);
+                frameRoi.Save(path4 + numFrames.ToString() + "_O.png");
 
-                frameRoi = binaryNiBlack(frameRoi);
-                frameRoi.Save(path2 + numFrames.ToString() + ".png"); //Borrar ya que funcione
-                HandConvexHull(frameRoi); 
+                openingImage = closeOperation(openingImage);
+                frameRoi.Save(path4 + numFrames.ToString() + "_C.png"); 
+
+                openingImage = binaryNiBlack(openingImage);
+                openingImage.Save(path4 + numFrames.ToString() + ".png"); 
+                
+                HandConvexHull(openingImage); 
+                
+
+                //frameRoi = binaryNiBlack(frameRoi);
+                //frameRoi.Save(path2 + numFrames.ToString() + ".png"); 
+
+                //frameRoi.SmoothMedian(3); 
+                //HandConvexHull(frameRoi); 
                 numFrames ++; 
             }
         } //end WindowLoaded
@@ -137,7 +154,6 @@ namespace SegmentationHand
             double Rizq = 0;
             double Rder = 0;
 
-
             handImage.AvgSdv(out media, out desest);
             mediaValue = media.MCvScalar;
 
@@ -147,20 +163,13 @@ namespace SegmentationHand
                 Kder = 2.3;
 
             Rizq = mediaValue.v0 - (Kizq * desest.v0);
-            Rder = mediaValue.v0 + (Kder * desest.v0);
-
-            //saveStatictics(numFrames, mediaValue.v0, desest.v0, cv, Rizq, Rder); 
+            Rder = mediaValue.v0 + (Kder * desest.v0); 
 
             handImage = handImage.InRange(new Gray(Rizq), new Gray(Rder));
             handImage.Save(path2 + numFrames.ToString() + "B.png");
-            //handImage = handImage.Not(); 
 
-            //handImage = handImage.ThresholdBinary(media, new Gray(255));
             handImage = openingOperation(handImage);
             handImage.Save(path2 + numFrames.ToString() + "_O.png");
-            
-            //handImage = closeOperation(handImage);
-            //handImage.Save(path2 + numFrames.ToString() + "_C.png");
 
             return handImage;
         }//end BinaryThresholdNiBlack  
@@ -170,7 +179,7 @@ namespace SegmentationHand
         {
             StructuringElementEx SElement;
 
-            SElement = new StructuringElementEx(7,3, 3, 2, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
+            SElement = new StructuringElementEx(3,7, 1, 3, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
 
             binaryFrame._MorphologyEx(SElement, Emgu.CV.CvEnum.CV_MORPH_OP.CV_MOP_OPEN, 1);
 
@@ -182,7 +191,7 @@ namespace SegmentationHand
         {
             StructuringElementEx SElement;
 
-            SElement = new StructuringElementEx(11,11, 5, 5, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
+            SElement = new StructuringElementEx(7,7, 1, 3, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
 
             binaryFrame._MorphologyEx(SElement, Emgu.CV.CvEnum.CV_MORPH_OP.CV_MOP_CLOSE, 1);
 
@@ -238,7 +247,7 @@ namespace SegmentationHand
                     convexHullPerimeter = Hull.Perimeter;
 
                     frameRoi.Draw(Hull, new Gray(155), 1);
-                    frameRoi.Save(path3 + "ConvexHull_" + numFrames.ToString() + ".png");
+                    frameRoi.Save(path4 + "ConvexHull_" + numFrames.ToString() + ".png");
 
                     ListReturn = GetFingers(frameRoi);
                     ListReturn.Add(contourPerimeter);
