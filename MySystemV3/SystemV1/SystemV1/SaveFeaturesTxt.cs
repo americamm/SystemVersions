@@ -11,8 +11,7 @@ namespace SystemV1
     public class SaveFeaturesTxt 
     { 
         //::::::::Variables:::::::::::::::::::::::::::::::::::::::::
-        //private string path= @"C:\MyRecognition\5to\WriteTest1.txt"; 
- 
+
         //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 

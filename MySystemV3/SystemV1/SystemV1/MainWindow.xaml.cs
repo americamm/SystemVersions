@@ -51,8 +51,8 @@ namespace SystemV1
         public int numFrames = 1;
         private int numFrameHandDetected = 1;
         //Escribir el archivito.
-        private string pathFront = @"C:\CaptureKinect\RoiNoNoise\test20\";
-        private string pathSide = @"C:\CaptureKinect\RoiNoNoise\test20\"; 
+        private string pathFront = @"C:\SystemTest\test1\Front\";
+        private string pathSide = @"C:\SystemTest\test1\Side\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -64,7 +64,7 @@ namespace SystemV1
             HandDetection = new HandDetector();
             GettingSegmentationK1 = new HandSegmentation();
             GettingSegmentationK2 = new HandSegmentation();
-            //SaveFeaturesText = new SaveFeaturesTxt();
+            SaveFeaturesText = new SaveFeaturesTxt();
             //Classifier = new Classification(); 
         } 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -157,14 +157,14 @@ namespace SystemV1
 
                             CircleF centrillo = new CircleF(positionCenterHand, 5f);
 
-                            imagenKinectGray1.Draw(centrillo, new Gray(150), 3); 
+                            imagenKinectGray1.Draw(centrillo, new Gray(150), 3);
+
+                            //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
 
                             //This thing is for count the frames where one hand is detected in every kinect.
 
-
                             imagenKinectGray1.Save(pathFront + "Front_" + numFrames.ToString() + "_"+ sec.ToString() + "_" + fps.ToString() + ".png");
                             imagenKinectGray2.Save(pathSide + "Side_" + numFrames.ToString() + "_"+ sec.ToString() + "_" + fps.ToString() + ".png");
-
 
                             DepthImageK1.Source = imagetoWriteablebitmap(imagenKinectGray1);
                             DepthImageK2.Source = imagetoWriteablebitmap(imagenKinectGray2); 

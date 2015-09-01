@@ -24,8 +24,8 @@ namespace SystemV1
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization 
-        private string path1 = @"C:\CaptureKinect\RoiNoNoise\test20\NoNoise\";
-        private string path2 = @"C:\CaptureKinect\RoiNoNoise\test20\Binarization\";
+        private string path1 = @"C:\SystemTest\test1\Front\Convex\";
+        private string path2 = @"C:\SystemTest\test1\Front\Convex\";
         private int numFrames = 1; 
                     
         public int numero;
@@ -35,6 +35,60 @@ namespace SystemV1
         //:::::::::::::Method for make the image binary::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         //the binarization is inspired in NiBlanck banarization, but in this case, we use just the average of the image. 
         //openinOperation() remove the noise of the binarized image, using morphological operation, we use opening. 
+
+        private Image<Gray, Byte> binaryNiBlack(Image<Gray, Byte> handFrame)
+        {
+            int widthFrame = handFrame.Width;
+            int heigthFrame = handFrame.Height;
+
+            int sizeSW = 3;
+            int sizeSW_w = sizeSW; //Size of the slinding window 
+            int sizeSW_h = sizeSW; //Size of the slinding window 
+            int halfWidth = (int)(Math.Floor((double)sizeSW / 2));
+            int halfHeigth = (int)(Math.Floor((double)sizeSW / 2));
+            int binaryWidth = widthFrame + halfWidth * 2;
+            int binaryHeigth = heigthFrame + halfHeigth * 2;
+            double k = 0.5;
+
+            Image<Gray, Byte> binaryFrameCalculation = new Image<Gray, Byte>(binaryWidth, binaryHeigth);
+            binaryFrameCalculation.SetZero();
+            Rectangle roiHand = new Rectangle(halfWidth, halfHeigth, widthFrame, heigthFrame);
+            binaryFrameCalculation.ROI = roiHand;
+            handFrame.CopyTo(binaryFrameCalculation);
+            binaryFrameCalculation.ROI = Rectangle.Empty;
+
+            byte[, ,] byteData = handFrame.Data;
+
+            for (int i = halfHeigth; i < heigthFrame + halfHeigth; i++)
+            {
+                for (int j = halfWidth; j < widthFrame + halfWidth; j++)
+                {
+                    Gray media;
+                    MCvScalar desest;
+                    MCvScalar mediaValue;
+                    double threshold;
+                    MCvBox2D roi;
+
+                    Image<Gray, Byte> imageCalculate = new Image<Gray, Byte>(sizeSW_w, sizeSW_h);
+                    roi = new MCvBox2D(new System.Drawing.Point(j, i), new System.Drawing.Size(sizeSW_w, sizeSW_h), 0);
+
+                    imageCalculate = binaryFrameCalculation.Copy(roi);
+                    binaryFrameCalculation.ROI = Rectangle.Empty;
+                    imageCalculate.AvgSdv(out media, out desest);
+                    mediaValue = media.MCvScalar;
+                    threshold = mediaValue.v0 + (k * desest.v0);
+
+                    if (byteData[i - halfHeigth, j - halfWidth, 0] < threshold)
+                        byteData[i - halfHeigth, j - halfWidth, 0] = 255;
+                    else
+                        byteData[i - halfHeigth, j - halfWidth, 0] = 0;
+                }
+            }
+
+            handFrame.Data = byteData;
+            return handFrame;
+        }
+
 
         private Image<Gray, Byte> binaryThresholdNiBlack(Image<Gray, Byte> handImage)
         {
@@ -78,18 +132,19 @@ namespace SystemV1
         {
             StructuringElementEx SElement;
 
-            SElement = new StructuringElementEx(5, 5, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
+            SElement = new StructuringElementEx(3, 7, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
 
             binaryFrame._MorphologyEx(SElement, Emgu.CV.CvEnum.CV_MORPH_OP.CV_MOP_OPEN, 1);
 
             return binaryFrame; 
         } //end openingOperation()
 
+
         private Image<Gray, Byte> closeOperation(Image<Gray, Byte> binaryFrame)
         {
             StructuringElementEx SElement;
 
-            SElement = new StructuringElementEx(5, 5, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
+            SElement = new StructuringElementEx(7, 7, 1, 3, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
 
             binaryFrame._MorphologyEx(SElement, Emgu.CV.CvEnum.CV_MORPH_OP.CV_MOP_CLOSE, 1);
 
@@ -105,8 +160,10 @@ namespace SystemV1
             //PointF centerPalm; 
 
             BinaryImage = frame.Copy(Roi);
-            BinaryImage.Save(path1 + "W13_" + numFrames.ToString() + ".png");
-            BinaryImage = binaryThresholdNiBlack(BinaryImage);
+            BinaryImage = openingOperation(BinaryImage);
+            BinaryImage = closeOperation(BinaryImage);
+            BinaryImage = binaryNiBlack(BinaryImage); 
+            //naryImage = binaryThresholdNiBlack(BinaryImage);
             //BinaryImage.Save(path2 + numFrames.ToString() + ".png");  
 
             using (MemStorage storage = new MemStorage())
@@ -208,6 +265,7 @@ namespace SystemV1
 
             return ListReturn;
         }//end get fingers  
+
 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
