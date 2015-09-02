@@ -10,9 +10,9 @@ namespace SystemV1
 { 
     public class SaveFeaturesTxt 
     { 
-        //::::::::Variables:::::::::::::::::::::::::::::::::::::::::
+        //::::::::Variables:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-        //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
         public void SaveFeaturesTraining(string assignedClass, List<object> Features, string path) 
@@ -56,7 +56,7 @@ namespace SystemV1
             }
         }
 
-        public void SaveFeaturesTest(List<object> Features, string path)
+        public void SaveFeaturesTest(List<object> Features, string path, int numFrames)
         {
             //Cast every element to his time of data; 
             int Fingers = (int)Features[1];
@@ -66,9 +66,11 @@ namespace SystemV1
             double convexhullArea = (double)Features[5];
             double convexhullPerimeter = (double)Features[6];
 
+           
 
             using (StreamWriter file = new StreamWriter(path, true))
             {
+                file.Write(numFrames.ToString() + " ");
                 file.Write("1" + ":" + Fingers + " ");
 
                 int featureNumber = 2; // 
