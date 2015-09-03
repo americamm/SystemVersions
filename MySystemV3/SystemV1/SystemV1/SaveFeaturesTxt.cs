@@ -56,7 +56,7 @@ namespace SystemV1
             }
         }
 
-        public void SaveFeaturesTest(List<object> Features, string path, int numFrames)
+        public void SaveFeaturesTest(int numFrames, List<object> Features, string path)
         {
             //Cast every element to his time of data; 
             int Fingers = (int)Features[1];
@@ -70,6 +70,7 @@ namespace SystemV1
 
             using (StreamWriter file = new StreamWriter(path, true))
             {
+
                 file.Write(numFrames.ToString() + " ");
                 file.Write("1" + ":" + Fingers + " ");
 

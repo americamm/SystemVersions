@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("cvextern.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("libsvm.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("opencl.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("opencv_calib3d2410.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("opencv_contrib2410.dll")]

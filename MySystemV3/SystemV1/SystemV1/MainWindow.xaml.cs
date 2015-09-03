@@ -160,6 +160,7 @@ namespace SystemV1
                             imagenKinectGray1.Draw(centrillo, new Gray(150), 3);
 
                             //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
+                            SaveFeaturesText.SaveFeaturesTest(numFrames, returnGettingSegK1, pathFront + "Test1.txt"); 
 
                             //This thing is for count the frames where one hand is detected in every kinect.
 
