@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemV1", "SystemV1\SystemV1.csproj", "{E0CBD449-CACF-412A-88B1-5D766B34DCB8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AC04337C-E542-4BE9-8DBD-5B44535299E2} = {AC04337C-E542-4BE9-8DBD-5B44535299E2}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSVMsharp", "LibSVMsharp\LibSVMsharp\LibSVMsharp.csproj", "{AC04337C-E542-4BE9-8DBD-5B44535299E2}"
 EndProject

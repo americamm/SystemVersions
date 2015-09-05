@@ -51,8 +51,8 @@ namespace SystemV1
         public int numFrames = 1;
         private int numFrameHandDetected = 1;
         //Escribir el archivito.
-        private string pathFront = @"C:\SystemTest\test1\Front\";
-        private string pathSide = @"C:\SystemTest\test1\Side\"; 
+        private string pathFront = @"C:\SystemTest\test1\TrainingTest3\Front\";
+        private string pathSide = @"C:\SystemTest\test1\TrainingTest3\Side\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
