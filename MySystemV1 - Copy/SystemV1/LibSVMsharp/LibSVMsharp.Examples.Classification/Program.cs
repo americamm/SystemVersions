@@ -16,8 +16,8 @@ namespace LibSVMsharp.Examples.Classification
             //Clasification clas = new Clasification();
             //clas.ClasificationHand();
             // Load the datasets: In this example I use the same datasets for training and testing which is not suggested
-            SVMProblem trainingSet = SVMProblemHelper.Load(@"C:\MyRecognition\TrainingSets\OneK\\40-60\40P.txt");
-            SVMProblem testSet = SVMProblemHelper.Load(@"C:\MyRecognition\TrainingSets\OneK\40-60\60P.txt");
+            SVMProblem trainingSet = SVMProblemHelper.Load(@"Dataset\2Classes.txt");
+            SVMProblem testSet = SVMProblemHelper.Load(@"Dataset\Test1.txt");
             
             // Normalize the datasets if you want: L2 Norm => x / ||x||
             trainingSet = trainingSet.Normalize(SVMNormType.L2);
@@ -43,7 +43,7 @@ namespace LibSVMsharp.Examples.Classification
             SVMModel model = trainingSet.Train(parameter);
 
             // Save the model
-            SVM.SaveModel(model,"Model_40OneK");
+            SVM.SaveModel(model,"2Classes_Model1");
 
             // Predict the instances in the test set
             double[] testResults = testSet.Predict(model);
