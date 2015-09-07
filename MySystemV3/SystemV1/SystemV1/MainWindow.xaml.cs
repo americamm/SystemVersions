@@ -34,6 +34,7 @@ namespace SystemV1
         public HandSegmentation GettingSegmentationK1;
         public HandSegmentation GettingSegmentationK2;
         public SaveFeaturesTxt SaveFeaturesText;
+        public Classification Classifier; 
         
         //----------Variables-------------------------------
         private int FrameWidth = 640;
@@ -50,9 +51,9 @@ namespace SystemV1
         public int sec = 1;
         public int numFrames = 1;
         private int numFrameHandDetected = 1;
-        //Escribir el archivito.
-        private string pathFront = @"C:\SystemTest\test1\TrainingTest3\Front\";
-        private string pathSide = @"C:\SystemTest\test1\TrainingTest3\Side\"; 
+        //Escribir el archivito de las caracteristicas.
+        private string pathFront = @"C:\SystemTest\test1\TrainingTest4\Front\";
+        private string pathSide = @"C:\SystemTest\test1\TrainingTest4\Side\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -65,7 +66,7 @@ namespace SystemV1
             GettingSegmentationK1 = new HandSegmentation();
             GettingSegmentationK2 = new HandSegmentation();
             SaveFeaturesText = new SaveFeaturesTxt();
-            //Classifier = new Classification(); 
+            Classifier = new Classification(); 
         } 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -73,9 +74,11 @@ namespace SystemV1
         //::::::Call methods:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GettingKinectData.FindKinect();
-            //Classifier.ClasificationHand(); 
+            GettingKinectData.FindKinect(); 
+            Classifier.ClassifiGesture(@"C:\SystemTest\test1\2Classes.txt", @"C:\SystemTest\test1\TrainingTest1\Front\Test1.txt", @"C:\SystemTest\test1\Results1.txt");
+            int a = 5; 
             CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
+            
         }
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 

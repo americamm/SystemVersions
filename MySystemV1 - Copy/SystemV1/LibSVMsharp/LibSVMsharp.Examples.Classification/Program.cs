@@ -13,12 +13,10 @@ namespace LibSVMsharp.Examples.Classification
     {
         static void Main(string[] args)
         {
-            //Clasification clas = new Clasification();
-            //clas.ClasificationHand();
             // Load the datasets: In this example I use the same datasets for training and testing which is not suggested
-            SVMProblem trainingSet = SVMProblemHelper.Load(@"Dataset\2Classes.txt");
-            SVMProblem testSet = SVMProblemHelper.Load(@"Dataset\Test1.txt");
-            
+            SVMProblem trainingSet = SVMProblemHelper.Load(@"C:\SystemTest\test1\2Classes.txt");
+            SVMProblem testSet = SVMProblemHelper.Load(@"C:\SystemTest\test1\TrainingTest1\Front\Test1.txt");
+
             // Normalize the datasets if you want: L2 Norm => x / ||x||
             trainingSet = trainingSet.Normalize(SVMNormType.L2);
             testSet = testSet.Normalize(SVMNormType.L2);
