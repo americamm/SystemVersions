@@ -27,7 +27,8 @@ namespace SystemV1
             {
                 foreach (double element in testResults)
                 {
-                    file.Write(element.ToString()); 
+                    file.Write(element.ToString()+"\n");
+                    file.Write(Environment.NewLine); 
                 }
             }
         }//end ClassifyGesture 

@@ -74,8 +74,8 @@ namespace SystemV1
         //::::::Call methods:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GettingKinectData.FindKinect(); 
-            Classifier.ClassifiGesture(@"C:\SystemTest\test1\2Classes.txt", @"C:\SystemTest\test1\TrainingTest1\Front\Test1.txt", @"C:\SystemTest\test1\Results1.txt");
+            GettingKinectData.FindKinect();  
+            Classifier.ClassifiGesture(@"C:\SystemTest\test1\TrainingTest1\2Classes_Model1.txt", @"C:\SystemTest\test1\TrainingTest1\Front\Test1.txt", @"C:\SystemTest\test1\Results1.txt");
             int a = 5; 
             CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
             
