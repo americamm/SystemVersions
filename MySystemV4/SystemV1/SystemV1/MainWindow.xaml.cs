@@ -52,8 +52,8 @@ namespace SystemV1
         public int numFrames = 1;
         private int numFrameHandDetected = 1;
         //Escribir el archivito de las caracteristicas.
-        private string pathFront = @"C:\SystemTest\test1\TrainingTest4\Front\";
-        private string pathSide = @"C:\SystemTest\test1\TrainingTest4\Side\"; 
+        private string pathFront = @"C:\SystemTest\test2\Front\";
+        private string pathSide = @"C:\SystemTest\test2\Side\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -75,10 +75,9 @@ namespace SystemV1
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GettingKinectData.FindKinect();  
-            Classifier.ClassifiGesture(@"C:\SystemTest\test1\TrainingTest1\2Classes_Model1.txt", @"C:\SystemTest\test1\TrainingTest1\Front\Test1.txt", @"C:\SystemTest\test1\Results1.txt");
-            int a = 5; 
+            //Comentado hasta ver el tiempo que tarda esto. 
+            //Classifier.ClassifiGesture(@"C:\SystemTest\test1\TrainingTest1\2Classes_Model1.txt", @"C:\SystemTest\test1\TrainingTest1\Front\Test1.txt", @"C:\SystemTest\test1\Results1.txt");
             CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
-            
         }
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
