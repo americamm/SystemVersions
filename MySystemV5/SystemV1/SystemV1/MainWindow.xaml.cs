@@ -100,7 +100,9 @@ namespace SystemV1
             
             bool noPositiveFalses;
             bool flag_execute = false;
-            bool FrameHandDetected = false; 
+            bool FrameHandDetected = false;
+            bool detectRoiFront = false;
+            bool detectRoiSide = false;
 
             //to get teh position of the hand 
             PointF centerHand; 
@@ -116,17 +118,21 @@ namespace SystemV1
             returnHandDetectorFrontActual = HandDetection.Detection(imagenKinectGray1);
             returnHandDetectorSideActual = HandDetection.Detection(imagenKinectGray2);
 
-
             //Cast the return of each frame
             RoiKinectFrontActual = (System.Drawing.Rectangle[])returnHandDetectorFrontActual[0];
             RoiKinectSideActual = (System.Drawing.Rectangle[])returnHandDetectorSideActual[0];
 
+            //Set the bool variables,
+            if (RoiKinectFrontActual.Length != 0)
+                detectRoiFront = true;
+            if (RoiKinectSideActual.Length != 0)
+                detectRoiSide = true; 
 
+            //To compare two consecitives frames. 
             if ( (numFrames == 1) || (FrameHandDetected == false) ) 
             {   
                 RectArrayPrev = RoiKinectFrontActual; 
             }
-
 
             //Guardar las imagenes para ver cuantas detecta   
             //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{ 
@@ -164,7 +170,7 @@ namespace SystemV1
             //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 
 
-            if (RoiKinectFrontActual.Length != 0) || ()//Esto se realiza si el cuadro del kinect es detectado. 
+            if ( (detectRoiSide) || (detectRoiSide) )//Esto se realiza si el cuadro del kinect es detectado. 
             {
                 //check if the roi in the previous frame intesect with the roi in the actual frame 
                 //noPositiveFalses = RectArrayPrev[0].IntersectsWith(RoiKinectFrontActual[0]);
@@ -175,7 +181,6 @@ namespace SystemV1
                     flag_execute = true;
                     numFrameHandDetected++; 
                 }*/
-
 
                 if (flag_execute)
                 {
