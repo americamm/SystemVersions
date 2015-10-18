@@ -28,7 +28,7 @@ namespace SystemV1
 
             if (frame != null)
             {
-                System.Drawing.Rectangle[] hands = haar.DetectMultiScale(frame, 1.1, 3, new System.Drawing.Size(frame.Width / 8, frame.Height / 8), new System.Drawing.Size(frame.Width / 3, frame.Height / 3));
+                System.Drawing.Rectangle[] hands = haar.DetectMultiScale(frame, 1.05, 1, new System.Drawing.Size(frame.Width / 8, frame.Height / 8), new System.Drawing.Size(frame.Width / 3, frame.Height / 3));
 
                 /*foreach (System.Drawing.Rectangle roi in hands)
                 {
@@ -38,7 +38,7 @@ namespace SystemV1
 
                 for (int i = 0; i < hands.Length; i++)
                 {
-                    hands[i].Inflate(-15, 20);
+                    //hands[i].Inflate(-15, 20);
                     frame.Draw(hands[i], new Gray(255), 1);
                 }
 

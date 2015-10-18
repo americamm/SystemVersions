@@ -52,8 +52,8 @@ namespace SystemV1
         public int numFrames = 1;
         private int numFrameHandDetected = 1;
         //Escribir el archivito de las caracteristicas.
-        private string pathFront = @"C:\SystemTest\test9\Front\";
-        private string pathSide = @"C:\SystemTest\test9\Side\"; 
+        private string pathFront = @"C:\SystemTest\test16\Front\";
+        private string pathSide = @"C:\SystemTest\test16\Side\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -128,7 +128,6 @@ namespace SystemV1
             }
 
 
-
             //Guardar las imagenes para ver cuantas detecta   
             //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{ 
             int numHsFront = RoiKinectFrontActual.Length;
@@ -162,23 +161,20 @@ namespace SystemV1
                     imagenKinectGray2.Save(pathSide + @"TwoH\" + numFrames.ToString() + "_" + sec.ToString() + "_" + fps.ToString() + ".png");
                     break;
             }
-            
-        
-
             //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 
 
-            if (RoiKinectFrontActual.Length != 0) //Esto se realiza si el cuadro del kinect es detectado. 
+            if (RoiKinectFrontActual.Length != 0) || ()//Esto se realiza si el cuadro del kinect es detectado. 
             {
                 //check if the roi in the previous frame intesect with the roi in the actual frame 
-                noPositiveFalses = RectArrayPrev[0].IntersectsWith(RoiKinectFrontActual[0]);
+                //noPositiveFalses = RectArrayPrev[0].IntersectsWith(RoiKinectFrontActual[0]);
 
-                if (noPositiveFalses)
+                /*if (noPositiveFalses)
                 {
                     RectArrayPrev = RoiKinectFrontActual;
                     flag_execute = true;
                     numFrameHandDetected++; 
-                }
+                }*/
 
 
                 if (flag_execute)
