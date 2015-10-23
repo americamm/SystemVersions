@@ -99,7 +99,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classification.cs" />
-    <Compile Include="GetData.cs" />
     <Compile Include="SaveFeaturesTxt.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

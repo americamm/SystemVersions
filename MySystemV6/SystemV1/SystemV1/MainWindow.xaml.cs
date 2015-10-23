@@ -52,8 +52,8 @@ namespace SystemV1
         public int numFrames = 1;
         private int numFrameHandDetected = 1;
         //Escribir el archivito de las caracteristicas.
-        private string pathFront = @"C:\SystemTest\V6\Front\";
-        private string pathSide = @"C:\SystemTest\V6\Side\"; 
+        private string pathFront = @"C:\SystemTest\V6\Test1\Front\Input\";
+        private string pathSide = @"C:\SystemTest\V6\Test1\Side\Input\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -104,22 +104,26 @@ namespace SystemV1
             bool detectRoiFront = false;
             bool detectRoiSide = false;
 
-            //to get teh position of the hand 
-            PointF centerHand; 
-            PointF positionRoi1;  
-            PointF positionCenterHand = new PointF();         
+            //to get the position of the hand 
+            PointF centerHandFront; 
+            PointF positionRoi1Front;  
+            PointF positionCenterHandF = new PointF();     
+            PointF centerHandSide; 
+            PointF positionRoi1Side;  
+            PointF positionCenterHandS = new PointF();
+           
             //-------------------------------------------------------------------------------
 
             //-------------------------------------------------------------------------------
             //Get actual frame and the next frame. To delate the frames with positive falses.  
-            imagenKinectGray1 = new Image<Gray, byte>(pathFront + numFrames.ToString()+".png");
-            imagenKinectGray2 = new Image<Gray, byte>(pathSide + numFrames.ToString()+".png"); 
+            imagenKinectGray1 = new Image<Gray, byte>(pathFront + "Front" + "_" + numFrames.ToString() + ".png"); //Poner el folder
+            imagenKinectGray2 = new Image<Gray, byte>(pathSide + "Side" + "_" + numFrames.ToString() + ".png"); 
 
             returnHandDetectorFrontActual = HandDetection.Detection(imagenKinectGray1);
             returnHandDetectorSideActual = HandDetection.Detection(imagenKinectGray2);
 
-            //Cast the return of each frame
-            RoiKinectFrontActual = (System.Drawing.Rectangle[])returnHandDetectorFrontActual[0];
+            //Cast the return of each frame                                                      MODIFICAR
+            RoiKinectFrontActual = (System.Drawing.Rectangle[])returnHandDetectorFrontActual[0]; //Poner todos los rectangulos que regresen
             RoiKinectSideActual = (System.Drawing.Rectangle[])returnHandDetectorSideActual[0];
 
             //Set the bool variables,
@@ -170,49 +174,59 @@ namespace SystemV1
             //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 
 
-            if ( (detectRoiSide) || (detectRoiSide) )//Esto se realiza si el cuadro del kinect es detectado. 
+            if ( (detectRoiFront) || (detectRoiSide) )//Esto se realiza si el cuadro del kinect es detectado. 
             {
-                //check if the roi in the previous frame intesect with the roi in the actual frame 
-                //noPositiveFalses = RectArrayPrev[0].IntersectsWith(RoiKinectFrontActual[0]);
-
-                /*if (noPositiveFalses)
+                if (detectRoiFront)
                 {
-                    RectArrayPrev = RoiKinectFrontActual;
-                    flag_execute = true;
-                    numFrameHandDetected++; 
-                }*/
-
-                if (flag_execute)
-                {
-                    if ((RoiKinectFrontActual.Length == 1) && (RoiKinectSideActual.Length == 1)) //Para saber cuantas detecta al mismo tiempo
+                    returnGettingSegK1 = GettingSegmentationK1.HandConvexHull(imagenKinectGray1, RoiKinectFrontActual[0]);
+                    
+                    if (returnGettingSegK1 != null)
                     {
-                        //Comentado hasta que quede el despliege de los datos 
-                        returnGettingSegK1 = GettingSegmentationK1.HandConvexHull(imagenKinectGray1, RoiKinectFrontActual[0]); 
-                        //if (RoiKinectSideActual.Length != 0)
-                        //    returnGettingSegK2 = GettingSegmentationK2.HandConvexHull(imagenKinectGray2, RoiKinectSideActual[0]);
-                        
-                        if (returnGettingSegK1 != null) 
-                        {
-                            centerHand = (PointF)returnGettingSegK1[0]; 
+                        centerHandFront = (PointF)returnGettingSegK1[0];                //Meter en una funcion 
 
-                            positionRoi1 = RoiKinectFrontActual[0].Location; 
-                            positionCenterHand.X = positionRoi1.X + centerHand.X; 
-                            positionCenterHand.Y = positionRoi1.Y + centerHand.Y; 
+                        positionRoi1Front = RoiKinectFrontActual[0].Location;
+                        positionCenterHandF.X = positionRoi1Front.X + centerHandFront.X;
+                        positionCenterHandF.Y = positionRoi1Front.Y + centerHandFront.Y;
 
-                            CircleF centrillo = new CircleF(positionCenterHand, 5f);
+                        CircleF centrillo = new CircleF(positionCenterHandF, 5f);
 
-                            imagenKinectGray1.Draw(centrillo, new Gray(150), 3);
+                        imagenKinectGray1.Draw(centrillo, new Gray(150), 3);
 
-                            //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
-                            SaveFeaturesText.SaveFeaturesTest(numFrames, returnGettingSegK1, pathFront + "Test1.txt"); 
+                        //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
+                        SaveFeaturesText.SaveFeaturesTest(numFrames, returnGettingSegK1, pathFront + "Test1Front.txt");
+                    }  
+                }
 
-                            //This thing is for count the frames where one hand is detected in every kinect.
+                if (detectRoiSide)
+                {
+                    returnGettingSegK2 = GettingSegmentationK2.HandConvexHull(imagenKinectGray2, RoiKinectSideActual[0]);
 
-                            imagenKinectGray1.Save(pathFront + "F_" + numFrames.ToString() + "_"+ sec.ToString() + "_" + fps.ToString() + ".png");
-                            imagenKinectGray2.Save(pathSide + "S_" + numFrames.ToString() + "_"+ sec.ToString() + "_" + fps.ToString() + ".png");
-                        } 
-                    }
-                }  
+                    if (returnGettingSegK2 != null)
+                    {
+                        centerHandSide = (PointF)returnGettingSegK2[0];                //Meter en una funcion 
+
+                        positionRoi1Side = RoiKinectFrontActual[0].Location;
+                        positionCenterHandS.X = positionRoi1Side.X + centerHandSide.X;
+                        positionCenterHandS.Y = positionRoi1Side.Y + centerHandSide.Y;
+
+                        CircleF centrillo = new CircleF(positionCenterHandS, 5f);
+
+                        imagenKinectGray2.Draw(centrillo, new Gray(150), 3);
+
+                        //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
+                        SaveFeaturesText.SaveFeaturesTest(numFrames, returnGettingSegK2, pathSide + "Test1Side.txt");
+                    } 
+                }
+
+                if ((RoiKinectFrontActual.Length == 1) && (RoiKinectSideActual.Length == 1)) //Para saber cuantas detecta al mismo tiempo
+                {
+                    //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
+                    SaveFeaturesText.FeaturesTwoKinectTest(numFrames, returnGettingSegK1, returnGettingSegK2, pathFront + "Test1.txt"); 
+
+                    //Save the images
+                    imagenKinectGray1.Save(pathFront + "F_" + numFrames.ToString() + "_"+ sec.ToString() + "_" + fps.ToString() + ".png");
+                    imagenKinectGray2.Save(pathSide + "S_" + numFrames.ToString() + "_"+ sec.ToString() + "_" + fps.ToString() + ".png");
+                }
             } 
 
             DepthImageK1.Source = imagetoWriteablebitmap(imagenKinectGray1);

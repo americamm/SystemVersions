@@ -24,8 +24,8 @@ namespace SystemV1
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization 
-        private string path1 = @"C:\SystemTest\test1\Front\Convex\";
-        private string path2 = @"C:\SystemTest\test1\Front\Convex\";
+        private string path1 = @"C:\SystemTest\V6\Test1\Front\Convex\";
+        private string path2 = @"C:\SystemTest\V6\Test1\Side\Convex\";
         private int numFrames = 1; 
                     
         public int numero;
