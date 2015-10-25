@@ -12,9 +12,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Emgu.CV;
+using Emgu.CV.UI; 
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.Util;
+using Emgu.Util; 
 using System.Drawing;
 using System.IO;
 

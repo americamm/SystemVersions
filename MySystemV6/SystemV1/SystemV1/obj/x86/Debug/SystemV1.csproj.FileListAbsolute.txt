@@ -252,7 +252,6 @@ C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\opencv_videostab2410.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.exe
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.pdb
-C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.CV.DebuggerVisualizers.VS2012.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.CV.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.CV.UI.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.Util.dll

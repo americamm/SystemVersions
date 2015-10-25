@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Emgu.CV;
+using Emgu.CV.UI; 
 using Emgu.CV.Structure;
 using Emgu.Util;  
 using System.Drawing;
@@ -205,10 +206,12 @@ namespace SystemV1
                 PointsMakeOalmCircle[i] = depthPoint;
 
                 //Custom heuristic based on some experiment, double check it before use
+                //try 
                 if ((startCircle.Center.Y < box.center.Y || depthCircle.Center.Y < box.center.Y) && (startCircle.Center.Y < depthCircle.Center.Y) && (Math.Sqrt(Math.Pow(startCircle.Center.X - depthCircle.Center.X, 2) + Math.Pow(startCircle.Center.Y - depthCircle.Center.Y, 2)) > box.size.Height / 6.5))
                 {
                     fingerNum++; //Number of the fingers
-                    PositionFingerTips[fingerNum - 1] = startPoint; 
+                    PositionFingerTips[fingerNum - 1] = startPoint;
+                    HandSegmentation.Draw(depthCircle, new Gray(82), 2);
                 }
             }
 

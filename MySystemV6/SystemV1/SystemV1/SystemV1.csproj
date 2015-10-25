@@ -62,9 +62,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Emgu\emgucv-windows-universal 2.4.10.1940\bin\Emgu.CV.dll</HintPath>
     </Reference>
-    <Reference Include="Emgu.CV.DebuggerVisualizers.VS2012">
-      <HintPath>..\..\..\..\..\..\..\Emgu\emgucv-windows-universal 2.4.10.1940\bin\Emgu.CV.DebuggerVisualizers.VS2012.dll</HintPath>
-    </Reference>
     <Reference Include="Emgu.CV.UI, Version=2.4.10.1939, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Emgu\emgucv-windows-universal 2.4.10.1940\bin\Emgu.CV.UI.dll</HintPath>
@@ -157,9 +154,7 @@
     <Content Include="opencv_contrib2410.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="opencv_core2410.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="opencv_core2410.dll" />
     <Content Include="opencv_features2d2410.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
