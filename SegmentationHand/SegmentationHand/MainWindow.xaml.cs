@@ -259,7 +259,7 @@ namespace SegmentationHand
                     frameRoi.Draw(Hull, new Gray(155), 1);
                     frameRoi.Save(path3 + "ConvexHull_" + numFrames.ToString() + ".png");
 
-                    ListReturn = GetFingers(frameRoi);
+                    ListReturn = GetFingersHand(frameRoi);
                     ListReturn.Add(contourPerimeter);
                     ListReturn.Add(contourArea);
                     ListReturn.Add(convexHullPerimeter);
@@ -355,10 +355,12 @@ namespace SegmentationHand
             } 
 
             int elements = DistanceArray.Length; 
+            
             for (int i = 0; i < elements; i++)
             {
                 Double minDistance = 20;
                 Double maxAngle = 60;
+                Double angle; 
                 int antecesor;
                 int sucesor;
 
@@ -373,16 +375,21 @@ namespace SegmentationHand
                 if (i == elements - 1)
                     sucesor = 0;
                 else
-                    sucesor = i + 1; 
+                    sucesor = i + 1;
 
+                angle = getAngleBetweenStart(depthPoints[i], startPoints[antecesor], startPoints[sucesor]);
 
+                if (angle >= maxAngle)
+                    continue;
+
+                fingerNum++;
             }
 
             return ListReturn; 
         
         }//end GetFingersHand
 
-        private double getAngleBetweenStart(PointF Pi, PointF Pia, PointF Pis, int antecesor, int sucesor, int i)
+        private double getAngleBetweenStart(PointF Pi, PointF Pia, PointF Pis)
         {  
             Double angle;  
             Double slopeAntecesor; 
