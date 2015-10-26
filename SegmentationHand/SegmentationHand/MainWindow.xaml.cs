@@ -337,8 +337,10 @@ namespace SegmentationHand
         private List<object> GetFingersHand(Image<Gray, Byte> HandSegmentation)
         {
             int fingerNum = 0;
-            List<object> ListReturn = new List<object>(3); //This list has   
-            Double[] DistanceArray = new Double[defectsArray.Length]; 
+            PointF[] startPoints = new PointF[defectsArray.Length];
+            PointF[] depthPoints = new PointF[defectsArray.Length];
+            Double[] DistanceArray = new Double[defectsArray.Length];
+            List<object> ListReturn = new List<object>(3); //This list has    
             PointF[] PointsMakeOalmCircle = new PointF[defectsArray.Length];
             PointF[] PositionFingerTips = new PointF[5];
             int[] anglesFingertipsCenter = new int[5];
@@ -346,10 +348,10 @@ namespace SegmentationHand
 
             for (int i = 0; i < defects.Total; i++)
             { 
-                PointF startPoint = new PointF((float)defectsArray[i].StartPoint.X, (float)defectsArray[i].StartPoint.Y);
-                PointF depthPoint = new PointF((float)defectsArray[i].DepthPoint.X, (float)defectsArray[i].DepthPoint.Y);
+                startPoints[i] = new PointF((float)defectsArray[i].StartPoint.X, (float)defectsArray[i].StartPoint.Y);
+                depthPoints[i] = new PointF((float)defectsArray[i].DepthPoint.X, (float)defectsArray[i].DepthPoint.Y);
 
-                DistanceArray[i] = Math.Sqrt(Math.Pow((startPoint.X - depthPoint.X), 2) + Math.Pow((startPoint.Y - depthPoint.Y), 2)); 
+                DistanceArray[i] = Math.Sqrt(Math.Pow((startPoints[i].X - depthPoints[i].X), 2) + Math.Pow((startPoints[i].Y - depthPoints[i].Y), 2)); 
             } 
 
             int elements = DistanceArray.Length; 
@@ -374,30 +376,35 @@ namespace SegmentationHand
                     sucesor = i + 1; 
 
 
-
-
-
-
-
-
-             
             }
 
             return ListReturn; 
         
-        }
+        }//end GetFingersHand
 
-        private double getAngleBetweenStart(int antecesor, int sucesor, int i)
+        private double getAngleBetweenStart(PointF Pi, PointF Pia, PointF Pis, int antecesor, int sucesor, int i)
         {  
             Double angle;  
             Double slopeAntecesor; 
-            Double slopeSucesor; 
+            Double slopeSucesor;
 
-            slopeAntecesor = 
+            slopeAntecesor = slope(Pia, Pi);
+            slopeSucesor = slope(Pis, Pi);
+
+            angle = (slopeAntecesor - slopeSucesor);  
             
+            return angle;  
+        }//end  getAngleBetweenStart 
 
-            return  
-        }
+
+        private double slope(PointF  p1, PointF p2)
+        {
+            double slope;  
+
+            slope = (p1.Y - p2.Y)/(p1.X - p2.Y);
+
+            return slope; 
+        }//end slope  
 
 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
