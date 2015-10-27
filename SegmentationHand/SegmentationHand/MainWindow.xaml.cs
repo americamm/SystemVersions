@@ -60,8 +60,6 @@ namespace SegmentationHand
             for (int i = 1; i < 66; i++)
             {
                 frameRoi = new Image<Gray, Byte>(path1 + i.ToString() + ".png");
-                
-                //if  
 
                 openingImage = openingOperation(frameRoi);
                 frameRoi.Save(path4 + numFrames.ToString() + "_O.png");
@@ -72,14 +70,14 @@ namespace SegmentationHand
                 openingImage = binaryNiBlack(openingImage);
                 openingImage.Save(path2 + numFrames.ToString() + ".png");
 
-                StructuringElementEx SElement;
-                SElement = new StructuringElementEx(3,3, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
+                //StructuringElementEx SElement;
+                //SElement = new StructuringElementEx(3,3, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
 
-                openingImage = openingImage.SmoothMedian(3);
+                //openingImage = openingImage.SmoothMedian(3);
                 //openingImage = openingImage.SmoothMedian(3);
                 //openingImage._Dilate(1);
-                openingImage._MorphologyEx(SElement, CV_MORPH_OP.CV_MOP_CLOSE, 1);
-                openingImage.Save(path2 + numFrames.ToString() + "_MF" + ".png");
+                //openingImage._MorphologyEx(SElement, CV_MORPH_OP.CV_MOP_CLOSE, 1);
+                //openingImage.Save(path2 + numFrames.ToString() + "_MF" + ".png");
 
                 HandConvexHull(openingImage); 
                 
@@ -346,8 +344,11 @@ namespace SegmentationHand
                 startPoints[i] = new PointF((float)defectsArray[i].StartPoint.X, (float)defectsArray[i].StartPoint.Y);
                 depthPoints[i] = new PointF((float)defectsArray[i].DepthPoint.X, (float)defectsArray[i].DepthPoint.Y);
 
-                DistanceDepth[i] = defectsArray[i].Depth; 
+                DistanceDepth[i] = defectsArray[i].Depth;
 
+                CircleF startCircle = new CircleF(startPoints[i], 5f);
+                HandSegmentation.Draw(startCircle, new Gray(60), 2);
+                HandSegmentation.Save(path3 + "Dedos_Start" + numFrames.ToString() + ".png");
                 //DistanceArray[i] = Math.Sqrt(Math.Pow((startPoints[i].X - depth[i].X), 2) + Math.Pow((startPoints[i].Y - depth[i].Y), 2));  
             } 
 
@@ -379,8 +380,13 @@ namespace SegmentationHand
                 if (angle >= maxAngle)
                     continue;
 
-                fingerNum++;
+                fingerNum++; 
+
+                CircleF startCircle = new CircleF(startPoints[i], 5f);
+                HandSegmentation.Draw(startCircle, new Gray(60), 2);
             }
+
+            HandSegmentation.Save(path3 + "Dedos" + numFrames.ToString()+".png");
 
             using (StreamWriter file = new StreamWriter(path3 + "Dedos.txt", true))
             {
