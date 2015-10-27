@@ -37,10 +37,10 @@ namespace SegmentationHand
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization  
-        private string path1 = @"C:\CaptureKinect\Binarization\test14\frames\";
-        private string path2 = @"C:\CaptureKinect\Binarization\test14\binary\";
-        private string path3 = @"C:\CaptureKinect\Binarization\test14\convex\";
-        private string path4 = @"C:\CaptureKinect\Binarization\test14\opening\";
+        private string path1 = @"C:\CaptureKinect\Binarization\test15\frames\";
+        private string path2 = @"C:\CaptureKinect\Binarization\test15\binary\";
+        private string path3 = @"C:\CaptureKinect\Binarization\test15\convex\";
+        private string path4 = @"C:\CaptureKinect\Binarization\test15\opening\";
         private int numFrames = 1;
 
         public int numero;
@@ -64,14 +64,13 @@ namespace SegmentationHand
                 //if  
 
                 openingImage = openingOperation(frameRoi);
-                //openingImage.SmoothMedian(3);
-                //frameRoi.Save(path4 + numFrames.ToString() + "_O.png");
+                frameRoi.Save(path4 + numFrames.ToString() + "_O.png");
 
                 openingImage = closeOperation(openingImage);
-                //frameRoi.Save(path4 + numFrames.ToString() + "_C.png"); 
+                frameRoi.Save(path4 + numFrames.ToString() + "_C.png"); 
 
                 openingImage = binaryNiBlack(openingImage);
-                openingImage.Save(path4 + numFrames.ToString() + ".png");
+                openingImage.Save(path2 + numFrames.ToString() + ".png");
 
                 StructuringElementEx SElement;
                 SElement = new StructuringElementEx(3,3, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
@@ -80,7 +79,7 @@ namespace SegmentationHand
                 //openingImage = openingImage.SmoothMedian(3);
                 //openingImage._Dilate(1);
                 openingImage._MorphologyEx(SElement, CV_MORPH_OP.CV_MOP_CLOSE, 1);
-                openingImage.Save(path4 + numFrames.ToString() + "_MF" + ".png");
+                openingImage.Save(path2 + numFrames.ToString() + "_MF" + ".png");
 
                 HandConvexHull(openingImage); 
                 
@@ -215,10 +214,6 @@ namespace SegmentationHand
             List<object> ListReturn = new List<object>();
             //PointF centerPalm; 
 
-            //frameRoi.Save(path1 + "W13_" + numFrames.ToString() + ".png");
-            //frameRoi = binaryThresholdNiBlack(frameRoi);
-            //frameRoi = binaryNiBlack(frameRoi); 
-            //frameRoi.Save(path2 + numFrames.ToString() + "O.png");  
 
             using (MemStorage storage = new MemStorage())
             {
@@ -339,7 +334,7 @@ namespace SegmentationHand
             int fingerNum = 0;
             PointF[] startPoints = new PointF[defectsArray.Length];
             PointF[] depthPoints = new PointF[defectsArray.Length];
-            Double[] DistanceArray = new Double[defectsArray.Length];
+            Double[] DistanceDepth = new Double[defectsArray.Length];
             List<object> ListReturn = new List<object>(3); //This list has    
             PointF[] PointsMakeOalmCircle = new PointF[defectsArray.Length];
             PointF[] PositionFingerTips = new PointF[5];
@@ -351,10 +346,12 @@ namespace SegmentationHand
                 startPoints[i] = new PointF((float)defectsArray[i].StartPoint.X, (float)defectsArray[i].StartPoint.Y);
                 depthPoints[i] = new PointF((float)defectsArray[i].DepthPoint.X, (float)defectsArray[i].DepthPoint.Y);
 
-                DistanceArray[i] = Math.Sqrt(Math.Pow((startPoints[i].X - depthPoints[i].X), 2) + Math.Pow((startPoints[i].Y - depthPoints[i].Y), 2)); 
+                DistanceDepth[i] = defectsArray[i].Depth; 
+
+                //DistanceArray[i] = Math.Sqrt(Math.Pow((startPoints[i].X - depth[i].X), 2) + Math.Pow((startPoints[i].Y - depth[i].Y), 2));  
             } 
 
-            int elements = DistanceArray.Length; 
+            int elements = DistanceDepth.Length; 
             
             for (int i = 0; i < elements; i++)
             {
@@ -364,7 +361,7 @@ namespace SegmentationHand
                 int antecesor;
                 int sucesor;
 
-                if (DistanceArray[i] < minDistance)
+                if (DistanceDepth[i] < minDistance)
                     continue;
 
                 if (i == 0)
@@ -372,17 +369,25 @@ namespace SegmentationHand
                 else 
                     antecesor = i - 1;
 
-                if (i == elements - 1)
+                if (i == (elements - 1))
                     sucesor = 0;
                 else
                     sucesor = i + 1;
 
-                angle = getAngleBetweenStart(depthPoints[i], startPoints[antecesor], startPoints[sucesor]);
+                angle = getAngleBetweenStart(startPoints[i], depthPoints[antecesor], depthPoints[sucesor]);
 
                 if (angle >= maxAngle)
                     continue;
 
                 fingerNum++;
+            }
+
+            using (StreamWriter file = new StreamWriter(path3 + "Dedos.txt", true))
+            {
+                file.Write(numFrames.ToString() + " ");
+                file.Write(fingerNum.ToString() + " ");
+                file.Write(PositionFingerTips.Length.ToString());
+                file.Write(Environment.NewLine);
             }
 
             return ListReturn; 
@@ -398,17 +403,17 @@ namespace SegmentationHand
             slopeAntecesor = slope(Pia, Pi);
             slopeSucesor = slope(Pis, Pi);
 
-            angle = (slopeAntecesor - slopeSucesor);  
-            
+            angle = Math.Abs(slopeSucesor - slopeAntecesor);  
+            //angle= Math.
             return angle;  
         }//end  getAngleBetweenStart 
 
 
         private double slope(PointF  p1, PointF p2)
         {
-            double slope;  
+            double slope;
 
-            slope = (p1.Y - p2.Y)/(p1.X - p2.Y);
+            slope = Math.Atan2(p1.Y - p2.Y, p1.X - p2.X); //(p1.Y - p2.Y)/(p1.X - p2.X);
 
             return slope; 
         }//end slope  
