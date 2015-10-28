@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-//using System.Windows.Shapes;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure; 
@@ -37,10 +36,10 @@ namespace SegmentationHand
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization  
-        private string path1 = @"C:\CaptureKinect\Binarization\test15\frames\";
-        private string path2 = @"C:\CaptureKinect\Binarization\test15\binary\";
-        private string path3 = @"C:\CaptureKinect\Binarization\test15\convex\";
-        private string path4 = @"C:\CaptureKinect\Binarization\test15\opening\";
+        private string path1 = @"C:\CaptureKinect\Binarization\test16\frames\";
+        private string path2 = @"C:\CaptureKinect\Binarization\test16\binary\";
+        private string path3 = @"C:\CaptureKinect\Binarization\test16\convex\";
+        private string path4 = @"C:\CaptureKinect\Binarization\test16\opening\";
         private int numFrames = 1;
 
         public int numero;
@@ -61,8 +60,11 @@ namespace SegmentationHand
             {
                 frameRoi = new Image<Gray, Byte>(path1 + i.ToString() + ".png");
 
-                openingImage = openingOperation(frameRoi);
-                frameRoi.Save(path4 + numFrames.ToString() + "_O.png");
+                //openingImage = openingOperation(frameRoi);
+                //frameRoi.Save(path4 + numFrames.ToString() + "_O.png");
+                frameRoi._Erode(1);
+                openingImage = frameRoi;   
+                frameRoi.Save(path4 + numFrames.ToString() + "E_.png"); 
 
                 openingImage = closeOperation(openingImage);
                 frameRoi.Save(path4 + numFrames.ToString() + "_C.png"); 
@@ -84,7 +86,6 @@ namespace SegmentationHand
                 //frameRoi = binaryNiBlack(frameRoi);
                 //frameRoi.Save(path2 + numFrames.ToString() + ".png"); 
 
-                //frameRoi.SmoothMedian(3); 
                 //HandConvexHull(frameRoi); 
                 numFrames ++; 
             }
@@ -106,7 +107,7 @@ namespace SegmentationHand
             int halfHeigth = (int)(Math.Floor((double)sizeSW/2));
             int binaryWidth = widthFrame + halfWidth*2;
             int binaryHeigth = heigthFrame + halfHeigth*2; 
-            double k = 0.5;
+            double k = 1;
 
 
             Image<Gray, Byte> binaryFrameCalculation = new Image<Gray, Byte>(binaryWidth,binaryHeigth);
@@ -150,6 +151,7 @@ namespace SegmentationHand
             return handFrame; 
         }
 
+
         private Image<Gray, Byte> binaryThresholdNiBlack(Image<Gray, Byte> handImage)
         {
             Gray media;
@@ -186,7 +188,7 @@ namespace SegmentationHand
         {
             StructuringElementEx SElement;
 
-            SElement = new StructuringElementEx(3,7, 1, 3, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
+            SElement = new StructuringElementEx(3,7, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
 
             binaryFrame._MorphologyEx(SElement, Emgu.CV.CvEnum.CV_MORPH_OP.CV_MOP_OPEN, 1);
 
@@ -250,6 +252,7 @@ namespace SegmentationHand
                     convexHullPerimeter = Hull.Perimeter;
 
                     frameRoi.Draw(Hull, new Gray(155), 1);
+                    frameRoi.Draw(biggestContour, new Gray(100), 1);
                     frameRoi.Save(path3 + "ConvexHull_" + numFrames.ToString() + ".png");
 
                     ListReturn = GetFingersHand(frameRoi);
@@ -347,7 +350,9 @@ namespace SegmentationHand
                 DistanceDepth[i] = defectsArray[i].Depth;
 
                 CircleF startCircle = new CircleF(startPoints[i], 5f);
+                CircleF depthCircle = new CircleF(depthPoints[i], 5f);
                 HandSegmentation.Draw(startCircle, new Gray(60), 2);
+                HandSegmentation.Draw(depthCircle, new Gray(60), 2);
                 HandSegmentation.Save(path3 + "Dedos_Start" + numFrames.ToString() + ".png");
                 //DistanceArray[i] = Math.Sqrt(Math.Pow((startPoints[i].X - depth[i].X), 2) + Math.Pow((startPoints[i].Y - depth[i].Y), 2));  
             } 
@@ -382,8 +387,10 @@ namespace SegmentationHand
 
                 fingerNum++; 
 
-                CircleF startCircle = new CircleF(startPoints[i], 5f);
-                HandSegmentation.Draw(startCircle, new Gray(60), 2);
+                CircleF startCircle = new CircleF(startPoints[i], 3f);
+                CircleF depthCircle = new CircleF(depthPoints[i], 3f);
+                HandSegmentation.Draw(startCircle, new Gray(120), 2);
+                HandSegmentation.Draw(depthCircle, new Gray(120), 2);
             }
 
             HandSegmentation.Save(path3 + "Dedos" + numFrames.ToString()+".png");
@@ -392,7 +399,6 @@ namespace SegmentationHand
             {
                 file.Write(numFrames.ToString() + " ");
                 file.Write(fingerNum.ToString() + " ");
-                file.Write(PositionFingerTips.Length.ToString());
                 file.Write(Environment.NewLine);
             }
 
@@ -409,7 +415,7 @@ namespace SegmentationHand
             slopeAntecesor = slope(Pia, Pi);
             slopeSucesor = slope(Pis, Pi);
 
-            angle = Math.Abs(slopeSucesor - slopeAntecesor);  
+            angle = ((slopeSucesor - slopeAntecesor)* 180) / Math.PI;  
             //angle= Math.
             return angle;  
         }//end  getAngleBetweenStart 
@@ -419,7 +425,7 @@ namespace SegmentationHand
         {
             double slope;
 
-            slope = Math.Atan2(p1.Y - p2.Y, p1.X - p2.X); //(p1.Y - p2.Y)/(p1.X - p2.X);
+            slope = Math.Atan2(p1.Y - p2.Y, p1.X - p2.X); 
 
             return slope; 
         }//end slope  
