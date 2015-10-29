@@ -1,0 +1,25 @@
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\CaptureDynamicGestures.exe
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\CaptureDynamicGestures.pdb
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\Emgu.CV.DebuggerVisualizers.VS2010.dll
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\Emgu.CV.dll
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\Emgu.CV.UI.dll
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\Emgu.Util.dll
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\ZedGraph.dll
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\Emgu.CV.xml
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\Emgu.CV.UI.xml
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\Emgu.Util.xml
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\MainWindow.baml
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\MainWindow.g.cs
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\App.g.cs
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures_Content.g.cs
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures_MarkupCompile.cache
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures.g.resources
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures.Properties.Resources.resources
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures.csproj.GenerateResource.Cache
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures.exe
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures.pdb
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\opencv_core2410.dll
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\opencv_highgui2410.dll
+c:\users\america\documents\visual studio 2010\Projects\CaptureDynamicGestures\CaptureDynamicGestures\bin\Debug\opencv_imgproc2410.dll
+C:\Users\America\Documents\SystemVersions\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures.exe
+C:\Users\America\Documents\SystemVersions\CaptureDynamicGestures\CaptureDynamicGestures\obj\x86\Debug\CaptureDynamicGestures.pdb
