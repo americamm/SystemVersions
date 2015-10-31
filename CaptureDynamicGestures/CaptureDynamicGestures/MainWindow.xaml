@@ -11,9 +11,9 @@
         <Label Content="Subject:" FontSize="13" FontWeight="Bold" Height="32" HorizontalAlignment="Left" Margin="30,429,0,0" Name="label3" VerticalAlignment="Top" Width="64" />
         <Label Content="Gesture:" FontSize="13" FontWeight="Bold" Height="32" HorizontalAlignment="Left" Margin="250,432,0,0" Name="label4" VerticalAlignment="Top" Width="64" />
         <Button Content="Stop Capture" Height="50" HorizontalAlignment="Left" Margin="520,429,0,0" Name="StopCapture" VerticalAlignment="Top" Width="133" FontSize="14" FontWeight="Bold" IsEnabled="False" Click="StopCapture_Click" />
-        <TextBox Height="29" HorizontalAlignment="Left" Margin="100,432,0,0" Name="Subject" VerticalAlignment="Top" Width="80" AcceptsReturn="True" AcceptsTab="False" TextChanged="Subject_TextChanged" />
-        <TextBox Height="29" HorizontalAlignment="Left" Margin="320,435,0,0" Name="Gesture" VerticalAlignment="Top" Width="80" TextChanged="Gesture_TextChanged" />
+        <TextBox Height="29" HorizontalAlignment="Left" Margin="100,432,0,0" Name="Subject" VerticalAlignment="Top" Width="80" AcceptsReturn="True" AcceptsTab="False"  KeyUp="Subject_KeyUp" />
+        <TextBox Height="29" HorizontalAlignment="Left" Margin="320,435,0,0" Name="Gesture" VerticalAlignment="Top" Width="80" KeyUp="Gesture_KeyUp" />
         <Label Content="Test:" FontSize="13" FontWeight="Bold" Height="32" HorizontalAlignment="Left" Margin="30,369,0,0" Name="label5" VerticalAlignment="Top" Width="55" />
-        <TextBox AcceptsReturn="True" AcceptsTab="False" Height="29" HorizontalAlignment="Left" Margin="100,369,0,0" Name="Test" VerticalAlignment="Top" Width="80" TextChanged="Test_TextChanged" />
+        <TextBox AcceptsReturn="True" AcceptsTab="False" Height="29" HorizontalAlignment="Left" Margin="100,369,0,0" Name="Test" VerticalAlignment="Top" Width="80" KeyUp="Test_KeyUp" />
     </Grid>
 </Window>

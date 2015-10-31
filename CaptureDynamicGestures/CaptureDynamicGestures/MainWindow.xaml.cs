@@ -55,7 +55,9 @@ namespace CaptureDynamicGestures
         private bool capture;
 
         private string path = @"C:\CaptureGestures\";
-        private string pathSave;
+        private string path1;
+        private string path2;
+        private string path3; 
         private string testP;
         private string subjectP;
         private string gestureP; 
@@ -90,8 +92,11 @@ namespace CaptureDynamicGestures
             imageKinectSide.Source = imagetoWriteablebitmap(imagenKinectGray2);
 
             if (capture)
-            {  
-              pathSave = @
+            {
+                imagenKinectGray1.Save(path3 + @"\" + "Front_" + numFrames.ToString() + "_" + sec.ToString() + "_" + fps.ToString() + ".png");
+                imagenKinectGray2.Save(path3 + @"\" + "Side_" + numFrames.ToString() + "_" + sec.ToString() + "_" + fps.ToString() +  ".png");  
+                
+                numFrames++;
             }
         }//end CompositionTarget_rendering()
 
@@ -177,7 +182,7 @@ namespace CaptureDynamicGestures
             depthFrameKinect = depthFrameKinectBGR.Convert<Gray, Byte>();
             depthFrameKinect = removeNoise(depthFrameKinect, 13);
 
-            numFrames++;
+            
 
             return depthFrameKinect;
         }//fin PollDepth() 
@@ -223,7 +228,8 @@ namespace CaptureDynamicGestures
 
         private void StopCapture_Click(object sender, RoutedEventArgs e)
         { 
-            capture = false; 
+            capture = false;
+            numFrames = 1; 
         }
 
         //::::::::::Unload the window::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -244,19 +250,92 @@ namespace CaptureDynamicGestures
             }
         }
 
-        private void Test_TextChanged(object sender, TextChangedEventArgs e)
+       /* private void Test_TextChanged(object sender, TextChangedEventArgs e)
         {
-            testP = Test.Text; 
+            testP = Test.Text;
+
+            path1 = path + testP.ToString();
+            DirectoryInfo directorio = new DirectoryInfo(path1);
+            if (directorio.Exists == false)
+            {
+                System.IO.Directory.CreateDirectory(path1);
+            }  
         }
 
         private void Subject_TextChanged(object sender, TextChangedEventArgs e)
         {
-            subjectP = Subject.Text; 
+            subjectP = Subject.Text;
+
+            path2 = path1 + @"\" + subjectP.ToString();
+            DirectoryInfo directorio = new DirectoryInfo(path2);
+            if (directorio.Exists == false)
+            { 
+                System.IO.Directory.CreateDirectory(path2);
+            }   
         }
 
         private void Gesture_TextChanged(object sender, TextChangedEventArgs e)
+        { 
+            gestureP = Gesture.Text;
+
+            path3 = path2 + @"\" + gestureP.ToString();
+            DirectoryInfo directorio = new DirectoryInfo(path3);
+            if (directorio.Exists == false)
+            {
+                System.IO.Directory.CreateDirectory(path3);
+            }  
+        }*/
+
+
+        private void Test_KeyUp(object sender, KeyEventArgs e)
         {
-            gestureP = Gesture.Text; 
+            if (e.Key == Key.Enter)
+            {
+                testP = Test.Text;
+                testP = testP.Replace("\r\n", string.Empty).Replace("\r", string.Empty).Replace("\n", string.Empty);
+
+                path1 = path + testP.ToString();
+                DirectoryInfo directorio = new DirectoryInfo(path1);
+                if (directorio.Exists == false)
+                {
+                    System.IO.Directory.CreateDirectory(path1);
+                }
+            }
+
+        }
+
+
+        private void Subject_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                subjectP = Subject.Text;
+                subjectP = subjectP.Replace("\r\n", string.Empty).Replace("\r", string.Empty).Replace("\n",string.Empty);
+                
+                path2 = path1 + @"\" + subjectP.ToString();
+                DirectoryInfo directorio = new DirectoryInfo(path2);
+                if (directorio.Exists == false)
+                {
+                    System.IO.Directory.CreateDirectory(path2);
+                }
+            }
+        }
+
+
+        private void Gesture_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                gestureP = Gesture.Text;
+                gestureP = gestureP.Replace("\r\n", string.Empty).Replace("\r", string.Empty).Replace("\n", string.Empty);
+
+                path3 = path2 + @"\" + gestureP.ToString();
+                DirectoryInfo directorio = new DirectoryInfo(path3);
+                if (directorio.Exists == false)
+                {
+                    System.IO.Directory.CreateDirectory(path3);
+                }
+            }
         }
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
