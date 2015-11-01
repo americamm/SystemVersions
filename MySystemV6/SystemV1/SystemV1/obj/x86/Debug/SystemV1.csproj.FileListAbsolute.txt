@@ -228,9 +228,7 @@ C:\Users\America\Documents\SystemVersions\MySystemV5\SystemV1\SystemV1\obj\x86\D
 C:\Users\America\Documents\SystemVersions\MySystemV5\SystemV1\SystemV1\obj\x86\Debug\SystemV1.g.resources
 C:\Users\America\Documents\SystemVersions\MySystemV5\SystemV1\SystemV1\obj\x86\Debug\SystemV1.Properties.Resources.resources
 C:\Users\America\Documents\SystemVersions\MySystemV5\SystemV1\SystemV1\obj\x86\Debug\SystemV1.csproj.GenerateResource.Cache
-C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.exe.config
-C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.exe
-C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.pdb
+C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\opencv_core2410.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\cvextern.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\OpenCL.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\opencv_calib3d2410.dll
@@ -249,8 +247,6 @@ C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\opencv_superres2410.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\opencv_video2410.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\opencv_videostab2410.dll
-C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.exe
-C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.pdb
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.CV.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.CV.UI.dll
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.Util.dll
@@ -259,7 +255,6 @@ C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.CV.xml
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.CV.UI.xml
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\Emgu.Util.xml
-C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.csprojResolveAssemblyReference.cache
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\MainWindow.baml
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\MainWindow.g.cs
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\App.g.cs
@@ -268,4 +263,8 @@ C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\D
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.g.resources
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.Properties.Resources.resources
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.csproj.GenerateResource.Cache
-C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\opencv_core2410.dll
+C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.exe
+C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.pdb
+C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.exe.config
+C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.exe
+C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.pdb
