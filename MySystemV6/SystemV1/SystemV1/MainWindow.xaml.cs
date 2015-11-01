@@ -53,8 +53,8 @@ namespace SystemV1
         public int numFrames = 1;
         private int numFrameHandDetected = 1;
         //Escribir el archivito de las caracteristicas.
-        private string pathFront = @"C:\SystemTest\V6\Test1\Front\Input\";
-        private string pathSide = @"C:\SystemTest\V6\Test1\Side\Input\"; 
+        private string pathFront = @"C:\SystemTest\V6\Test2\Front\Input\";
+        private string pathSide = @"C:\SystemTest\V6\Test2\Side\Input\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -117,8 +117,8 @@ namespace SystemV1
 
             //-------------------------------------------------------------------------------
             //Get actual frame and the next frame. To delate the frames with positive falses.  
-            imagenKinectGray1 = new Image<Gray, byte>(pathFront + "Front" + "_" + numFrames.ToString() + ".png"); //Poner el folder
-            imagenKinectGray2 = new Image<Gray, byte>(pathSide + "Side" + "_" + numFrames.ToString() + ".png"); 
+            imagenKinectGray1 = new Image<Gray, byte>(pathFront + "Front" + "_" + numFrames.ToString() + "_1_1" + ".png"); //Poner el folder
+            imagenKinectGray2 = new Image<Gray, byte>(pathSide + "Side" + "_" + numFrames.ToString() + "_1_1" + ".png"); 
 
             returnHandDetectorFrontActual = HandDetection.Detection(imagenKinectGray1);
             returnHandDetectorSideActual = HandDetection.Detection(imagenKinectGray2);
@@ -144,8 +144,8 @@ namespace SystemV1
             int numHsFront = RoiKinectFrontActual.Length;
             int numHsSide = RoiKinectSideActual.Length;
 
-            imagenKinectGray1.Save(pathFront + "Front_" + numFrames.ToString() + "_" + sec.ToString() + "_" + fps.ToString() + ".png");
-            imagenKinectGray2.Save(pathSide + "Side_" + numFrames.ToString() + "_" + sec.ToString() + "_" + fps.ToString() + ".png"); 
+            imagenKinectGray1.Save(pathFront + "DFront_" + numFrames.ToString() + ".png");
+            imagenKinectGray2.Save(pathSide + "DSide_" + numFrames.ToString() + ".png"); 
 
             switch (numHsFront)
             {
@@ -206,7 +206,7 @@ namespace SystemV1
                     {
                         centerHandSide = (PointF)returnGettingSegK2[0];                //Meter en una funcion 
 
-                        positionRoi1Side = RoiKinectFrontActual[0].Location;
+                        positionRoi1Side = RoiKinectSideActual[0].Location;
                         positionCenterHandS.X = positionRoi1Side.X + centerHandSide.X;
                         positionCenterHandS.Y = positionRoi1Side.Y + centerHandSide.Y;
 
@@ -225,8 +225,8 @@ namespace SystemV1
                     SaveFeaturesText.FeaturesTwoKinectTest(numFrames, returnGettingSegK1, returnGettingSegK2, pathFront + "Test1.txt"); 
 
                     //Save the images
-                    imagenKinectGray1.Save(pathFront + "F_" + numFrames.ToString() + "_"+ sec.ToString() + "_" + fps.ToString() + ".png");
-                    imagenKinectGray2.Save(pathSide + "S_" + numFrames.ToString() + "_"+ sec.ToString() + "_" + fps.ToString() + ".png");
+                    imagenKinectGray1.Save(pathFront + "F_" + numFrames.ToString() + "_"+ ".png");
+                    imagenKinectGray2.Save(pathSide + "S_" + numFrames.ToString() + "_"+ ".png");
                 }
             } 
 
