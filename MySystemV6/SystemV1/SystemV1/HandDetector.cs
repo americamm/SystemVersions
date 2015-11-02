@@ -20,7 +20,7 @@ namespace SystemV1
 
 
         //::::::::::::Detection of the hand in a gray image::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-        public List<Object> Detection(Image<Gray, Byte> frame)
+        public List<Object> Detection(Image<Gray, Byte> frame, PointF centerHand)
         {   
             List<Object> listReturn = new List<object>(2);
             haar = new CascadeClassifier(@"C:\Users\America\Documents\MySystemV1\classifier\cascade.xml");
@@ -34,14 +34,13 @@ namespace SystemV1
                 for (int i = 0; i < hands.Length; i++)
                 {
                     hands[i].Inflate(-15, 26);
-                    //frame.Draw(hands[i], new Gray(255), 1);
                 }
 
                 //Check if the rois are intersected with others and then merge. 
                 if (hands.Length > 1)
                 { 
                     //Call the function to check the intersection 
-                    hands = MergeRois(hands); 
+                    hands = MergeRois(hands, centerHand); 
                 }
 
                 if (hands.Count() == 0)
@@ -67,9 +66,8 @@ namespace SystemV1
         }//finaliza detection()   
         
         //::::::::Merge the intersected rois, when his intersection is more then  50% of the area::::::::::::::::::::::::::::::::::::::::::::::::::: 
-        private System.Drawing.Rectangle[] MergeRois(System.Drawing.Rectangle[] detectedRois)
+        private System.Drawing.Rectangle[] MergeRois(System.Drawing.Rectangle[] detectedRois, PointF centerHand)
         {  
-            int index = 0;
             System.Drawing.Rectangle[] returnMergeRois = new Rectangle[detectedRois.Length];  
             
             for (int i = 1; i < detectedRois.Length; i++)
@@ -80,26 +78,34 @@ namespace SystemV1
                     double areaRect2; //area of the intecsection of the rectangles. 
                     Rectangle intersection;
 
-                    intersection = Rectangle.Intersect(detectedRois[i - 1], detectedRois[i]); 
-                    areaRect1 = detectedRois[i - 1].Width * detectedRois[i-1].Height;
-                    areaRect2 = intersection.Width * intersection.Height; 
-                    
-                    if ((areaRect2/areaRect1) > 0.6)
+                    intersection = Rectangle.Intersect(detectedRois[i - 1], detectedRois[i]);
+                    areaRect1 = detectedRois[i - 1].Width * detectedRois[i - 1].Height;
+                    areaRect2 = intersection.Width * intersection.Height;
+
+                    if ((areaRect2 / areaRect1) > 0.6)
                     {
-                        if (index < 1) 
-                            returnMergeRois[0] = Rectangle.Union(detectedRois[i - 1], detectedRois[i]);
-                        
-                        index++;
+                        returnMergeRois[0] = Rectangle.Union(detectedRois[i - 1], detectedRois[i]);
+                        return returnMergeRois;
+
                     }
-                } 
+                    else
+                    {
+                        returnMergeRois[0] = detectedRois[i];
+                        return returnMergeRois;
+                    } 
+                }
+                else  
+                {
+                    Point center = new Point((int)centerHand.X, (int)centerHand.Y);  
+                    if (detectedRois[i-1].Contains(center))
+                    {
+                        returnMergeRois[0] = detectedRois[i - 1];
+                        return returnMergeRois; 
+                    }
+                }
             }
 
-            if (index == 0)
-            {
-                return detectedRois; 
-            }
-
-            return returnMergeRois; 
+            return detectedRois; 
         }//end MergeRois
 
     }//end class

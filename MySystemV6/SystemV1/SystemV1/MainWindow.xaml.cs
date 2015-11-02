@@ -47,6 +47,9 @@ namespace SystemV1
 
         private System.Drawing.Rectangle[] RectArrayPrev; 
 
+        //Position Center of hands  
+        public PointF positionCenterHandF = new PointF();
+        public PointF positionCenterHandS = new PointF();
         //para contar los cuadros por segundo 
         public int fps = 1;
         public int sec = 1;
@@ -105,14 +108,11 @@ namespace SystemV1
             bool detectRoiFront = false;
             bool detectRoiSide = false;
 
-            //to get the position of the hand 
-            PointF centerHandFront; 
+            //to get the position of the hand  
+            PointF centerHandFront = new PointF(); 
+            PointF centerHandSide = new PointF(); 
             PointF positionRoi1Front;  
-            PointF positionCenterHandF = new PointF();     
-            PointF centerHandSide; 
             PointF positionRoi1Side;  
-            PointF positionCenterHandS = new PointF();
-           
             //-------------------------------------------------------------------------------
 
             //-------------------------------------------------------------------------------
@@ -120,8 +120,8 @@ namespace SystemV1
             imagenKinectGray1 = new Image<Gray, byte>(pathFront + "Front" + "_" + numFrames.ToString() + "_1_1" + ".png"); //Poner el folder
             imagenKinectGray2 = new Image<Gray, byte>(pathSide + "Side" + "_" + numFrames.ToString() + "_1_1" + ".png"); 
 
-            returnHandDetectorFrontActual = HandDetection.Detection(imagenKinectGray1);
-            returnHandDetectorSideActual = HandDetection.Detection(imagenKinectGray2);
+            returnHandDetectorFrontActual = HandDetection.Detection(imagenKinectGray1, positionCenterHandF);
+            returnHandDetectorSideActual = HandDetection.Detection(imagenKinectGray2, positionCenterHandS);
 
             //Cast the return of each frame                                                      MODIFICAR
             RoiKinectFrontActual = (System.Drawing.Rectangle[])returnHandDetectorFrontActual[0]; //Poner todos los rectangulos que regresen

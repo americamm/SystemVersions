@@ -268,3 +268,4 @@ C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\D
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.exe.config
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.exe
 C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\bin\Debug\SystemV1.pdb
+C:\Users\America\Documents\SystemVersions\MySystemV6\SystemV1\SystemV1\obj\x86\Debug\SystemV1.csprojResolveAssemblyReference.cache
