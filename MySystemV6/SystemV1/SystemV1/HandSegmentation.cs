@@ -42,14 +42,14 @@ namespace SystemV1
             int widthFrame = handFrame.Width;
             int heigthFrame = handFrame.Height;
 
-            int sizeSW = 3;
+            int sizeSW = 4;
             int sizeSW_w = sizeSW; //Size of the slinding window 
             int sizeSW_h = sizeSW; //Size of the slinding window 
             int halfWidth = (int)(Math.Floor((double)sizeSW / 2));
             int halfHeigth = (int)(Math.Floor((double)sizeSW / 2));
             int binaryWidth = widthFrame + halfWidth * 2;
             int binaryHeigth = heigthFrame + halfHeigth * 2;
-            double k = 1;
+            double k = .6;
 
             Image<Gray, Byte> binaryFrameCalculation = new Image<Gray, Byte>(binaryWidth, binaryHeigth);
             binaryFrameCalculation.SetZero();
@@ -126,7 +126,7 @@ namespace SystemV1
             
             BinaryImage = openingOperation(BinaryImage);
             BinaryImage = closeOperation(BinaryImage);
-            BinaryImage.Save(path2 + numFrames.ToString() + ".png");  
+            BinaryImage.Save(path1 + numFrames.ToString() + ".png");  
             BinaryImage = binaryNiBlack(BinaryImage); 
             //naryImage = binaryThresholdNiBlack(BinaryImage);
             //
@@ -168,7 +168,7 @@ namespace SystemV1
                     convexHullPerimeter = Hull.Perimeter;
 
                     BinaryImage.Draw(Hull, new Gray(155), 1);
-                    BinaryImage.Save(path1 + "ConvexHull_" + numFrames.ToString() + ".png");
+                    //ABinaryImage.Save(path1 + "ConvexHull_" + numFrames.ToString() + ".png");
 
                     ListReturn = GetFingersHand(BinaryImage);
                     ListReturn.Add(contourPerimeter);
@@ -244,7 +244,7 @@ namespace SystemV1
                 CircleF depthCircle = new CircleF(depthPoints[i], 3f);
                 HandSegmentation.Draw(startCircle, new Gray(120), 2);
                 HandSegmentation.Draw(depthCircle, new Gray(120), 2);
-                HandSegmentation.Save(path1 + "Dedos_" + numFrames.ToString() + ".png"); 
+                HandSegmentation.Save(path1 + numFrames.ToString() + "Dedos"  + ".png"); 
             }
 
             CircleF circulito = Emgu.CV.PointCollection.MinEnclosingCircle(depthPoints);
