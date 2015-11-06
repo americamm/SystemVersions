@@ -14,8 +14,11 @@ namespace LibSVMsharp.Examples.Classification
         static void Main(string[] args)
         {
             // Load the datasets: In this example I use the same datasets for training and testing which is not suggested
-            SVMProblem trainingSet = SVMProblemHelper.Load(@"C:\SystemTest\test1\2Classes.txt");
-            SVMProblem testSet = SVMProblemHelper.Load(@"C:\SystemTest\test1\TrainingTest1\Front\Test1.txt");
+            //SVMProblem trainingSet = SVMProblemHelper.Load(@"C:\SystemTest\test1\2Classes.txt");
+            //SVMProblem testSet = SVMProblemHelper.Load(@"C:\SystemTest\test1\TrainingTest1\Front\Test1.txt");
+            SVMProblem trainingSet = SVMProblemHelper.Load(@"C:\Users\America\Documents\SystemVersions\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.RapidPrediction\Dataset\wine.txt");
+            SVMProblem testSet = SVMProblemHelper.Load(@"C:\Users\America\Documents\SystemVersions\MySystemV1 - Copy\SystemV1\LibSVMsharp\LibSVMsharp.Examples.RapidPrediction\Dataset\wine.txt");
+
 
             // Normalize the datasets if you want: L2 Norm => x / ||x||
             trainingSet = trainingSet.Normalize(SVMNormType.L2);
@@ -41,7 +44,7 @@ namespace LibSVMsharp.Examples.Classification
             SVMModel model = trainingSet.Train(parameter);
 
             // Save the model
-            SVM.SaveModel(model,"2Classes_Model1");
+            SVM.SaveModel(model,"Model_wine_modif2");
 
             // Predict the instances in the test set
             double[] testResults = testSet.Predict(model);
