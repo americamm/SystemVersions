@@ -178,40 +178,7 @@ namespace SystemV1
                 }
             }
 
-
-            if ( (detectRoiFront) || (detectRoiSide) )//Esto se realiza si el cuadro del kinect es detectado. 
-            {
-                if (detectRoiFront)
-                {
-                    returnGettingSegK1 = GettingSegmentationK1.HandConvexHull(imagenKinectGray1, RoiKinectFrontActual[0]);
-                    
-                    if (returnGettingSegK1 != null)
-                    {
-                        //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
-                        SaveFeaturesText.SaveFeaturesTest(numFrames, returnGettingSegK1, pathFront + "Test1Front.txt");
-                    }  
-                }
-
-                if (detectRoiSide)
-                {
-                    returnGettingSegK2 = GettingSegmentationK2.HandConvexHull(imagenKinectGray2, RoiKinectSideActual[0]);
-
-                    if (returnGettingSegK2 != null)
-                    {
-                        //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
-                        SaveFeaturesText.SaveFeaturesTest(numFrames, returnGettingSegK2, pathSide + "Test1Side.txt");
-                    } 
-                }
-
-                if ((RoiKinectFrontActual.Length == 1) && (RoiKinectSideActual.Length == 1)) //Para saber cuantas detecta al mismo tiempo
-                {
-                    //SaveFeaturesText.SaveFeaturesTraining("2", returnGettingSegK1, pathFront+"TrainingFront2.txt"); 
-                    SaveFeaturesText.FeaturesTwoKinectTest(numFrames, returnGettingSegK1, returnGettingSegK2, pathFront + "TestAmbosTwo.txt"); 
-                    //Save the images
-                    imagenKinectGray1.Save(pathFront + "F_" + numFrames.ToString() + "_"+ ".png");
-                    imagenKinectGray2.Save(pathSide + "S_" + numFrames.ToString() + "_"+ ".png");
-                }
-            } 
+            SaveFeaturesText.FeaturesTwoKTest(numFrames, returnGettingSegK1, returnGettingSegK2, pathFront + "Clasificar.txt"); 
 
             DepthImageK1.Source = imagetoWriteablebitmap(imagenKinectGray1);
             DepthImageK2.Source = imagetoWriteablebitmap(imagenKinectGray2); 
@@ -247,6 +214,14 @@ namespace SystemV1
         }  
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
+        //::::::::::::::::::::::::::::::::::::::::::::::::
+        private void ComputeCenterHand()
+        { 
+            
+        }
+
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
         //:::::::::::::::Stop the kinect stream::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         private void Window_Unloaded(object sender, RoutedEventArgs e)
