@@ -130,8 +130,8 @@ namespace SystemV1
             //Set the bool variables,
             if (RoiKinectFrontActual.Length != 0)
                 detectRoiFront = true;
-            if (RoiKinectSideActual.Length != 0)
-                detectRoiSide = true; 
+            //if (RoiKinectSideActual.Length != 0)
+             //   detectRoiSide = true; 
 
             //Guardar las imagenes
             //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{ 

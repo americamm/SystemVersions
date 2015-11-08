@@ -33,7 +33,7 @@ namespace SystemV1
                 //Draw the inflated teh rectagle and draw it. 
                 for (int i = 0; i < hands.Length; i++)
                 {
-                    hands[i].Inflate(-20, 23);
+                    hands[i].Inflate(-24, 23);
                 }
 
                 //Check if the rois are intersected with others and then merge. 
