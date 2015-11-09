@@ -174,15 +174,27 @@ namespace SystemV1
         {
             List<object> ListReturn = new List<object>(); 
             Image<Gray, Byte> BinaryImage;
+            Image<Gray,Byte> frameImagePtr; 
             //PointF centerPalm; 
 
             BinaryImage = frame.Copy(Roi);
             
             BinaryImage = openingOperation(BinaryImage);
             BinaryImage = closeOperation(BinaryImage);
-            BinaryImage.Save(path1 + numFrames.ToString() + ".png");  
-            BinaryImage = binarySauvola(BinaryImage);
-            BinaryImage.Save(path1 + numFrames.ToString() + "B.png");  
+            BinaryImage.Save(path1 + numFrames.ToString() + ".png");
+
+            frameImagePtr= BinaryImage; 
+
+            IntPtr framePtr = frameImagePtr.Ptr;
+            IntPtr binaryPrt = BinaryImage.Ptr; 
+            //double maxValue= 255; 
+
+            //CvInvoke.cvAdaptiveThreshold(frameImagePtr,BinaryImage, maxValue, Emgu.CV.CvEnum.ADAPTIVE_THRESHOLD_TYPE.CV_ADAPTIVE_THRESH_MEAN_C, Emgu.CV.CvEnum.THRESH.CV_THRESH_BINARY_INV, 5, 1 );
+            CvInvoke.cvThreshold(framePtr, binaryPrt, 150, 255, Emgu.CV.CvEnum.THRESH.CV_THRESH_OTSU);
+            BinaryImage.Save(path1 + numFrames.ToString() + "B_Otsu.png");
+           
+            //BinaryImage = binarySauvola(BinaryImage);
+            //BinaryImage.Save(path1 + numFrames.ToString() + "B.png");  
             //BinaryImage = binaryNiBlack(BinaryImage);
             //BinaryImage.Save(path1 + numFrames.ToString() + "B.png"); 
             //
