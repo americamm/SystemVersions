@@ -128,5 +128,67 @@ namespace SystemV1
             }
         }//end method
 
+        public void FeaturesOneTest(int numFrame, List<object> FrontK, string path)
+        {
+            //Declare////////////////////////// 
+            int featureNumber = 0;
+
+            int FingersFrontK = 0;
+            int[] ArrayAnglesFrontK = new int[5];
+            double contourPerimeterFrontK = 0;
+            double contourAreaFrontK = 0;
+            double convexhullAreaFrontK = 0;
+            double convexhullPerimeterFrontK = 0;
+
+            bool flagFront = false;
+            ////////////////////////////////
+
+            if (FrontK.Count != 0)
+            {
+                //cast the FrontK
+                FingersFrontK = (int)FrontK[1];
+                ArrayAnglesFrontK = (int[])FrontK[2];
+                contourPerimeterFrontK = (double)FrontK[3];
+                contourAreaFrontK = (double)FrontK[4];
+                convexhullAreaFrontK = (double)FrontK[5];
+                convexhullPerimeterFrontK = (double)FrontK[6];
+
+                flagFront = true;
+            }
+            
+            using (StreamWriter file = new StreamWriter(path, true))
+            {
+                file.Write(numFrame.ToString() + " ");
+
+                if (flagFront)
+                {
+
+                    file.Write("1" + ":" + FingersFrontK + " ");
+
+                    featureNumber = 2; // 
+
+                    //write the angles;  
+                    foreach (int element in ArrayAnglesFrontK)
+                    {
+                        file.Write(featureNumber.ToString() + ":" + element.ToString() + " ");
+                        featureNumber++;
+                    }
+
+                    file.Write(featureNumber.ToString() + ":" + contourPerimeterFrontK.ToString() + " ");
+                    featureNumber++;
+
+                    file.Write(featureNumber.ToString() + ":" + contourAreaFrontK.ToString() + " ");
+                    featureNumber++;
+
+                    file.Write(featureNumber.ToString() + ":" + convexhullAreaFrontK.ToString() + " ");
+                    featureNumber++;
+
+                    file.Write(featureNumber.ToString() + ":" + convexhullPerimeterFrontK.ToString() + " ");
+                    featureNumber++;
+                }
+
+                file.Write(Environment.NewLine);
+            }
+        }//end method
     }//end class
 }//end namespace

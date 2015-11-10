@@ -25,7 +25,7 @@ namespace SystemV1
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization 
-        private string path1 = @"C:\SystemTest\V7\Test2\Front\Convex\";
+        private string path1 = @"C:\CaptureGestures\90L\Alma\1\Test\";
         private string path2 = @"C:\SystemTest\V7\Test2\Side\Convex\";
         private int numFrames = 1; 
                     
@@ -149,7 +149,7 @@ namespace SystemV1
         {
             StructuringElementEx SElement;
 
-            SElement = new StructuringElementEx(3, 7, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
+            SElement = new StructuringElementEx(3, 9, 1, 4, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
 
             binaryFrame._MorphologyEx(SElement, Emgu.CV.CvEnum.CV_MORPH_OP.CV_MOP_OPEN, 1);
 
@@ -161,7 +161,7 @@ namespace SystemV1
         {
             StructuringElementEx SElement;
 
-            SElement = new StructuringElementEx(7, 7, 1, 3, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
+            SElement = new StructuringElementEx(3, 11, 1, 5, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
 
             binaryFrame._MorphologyEx(SElement, Emgu.CV.CvEnum.CV_MORPH_OP.CV_MOP_CLOSE, 1);
 
@@ -174,30 +174,23 @@ namespace SystemV1
         {
             List<object> ListReturn = new List<object>(); 
             Image<Gray, Byte> BinaryImage;
-            Image<Gray,Byte> frameImagePtr; 
-            //PointF centerPalm; 
+            Image<Gray,Byte> frameImagePtr;  
 
             BinaryImage = frame.Copy(Roi);
-            
-            BinaryImage = openingOperation(BinaryImage);
-            BinaryImage = closeOperation(BinaryImage);
-            BinaryImage.Save(path1 + numFrames.ToString() + ".png");
+            //BinaryImage.Save(path1 + numFrames.ToString() + ".png");
 
             frameImagePtr= BinaryImage; 
 
             IntPtr framePtr = frameImagePtr.Ptr;
             IntPtr binaryPrt = BinaryImage.Ptr; 
-            //double maxValue= 255; 
+            
+            CvInvoke.cvThreshold(framePtr, binaryPrt, 0, 255, Emgu.CV.CvEnum.THRESH.CV_THRESH_OTSU);
+            //BinaryImage.Save(path1 + numFrames.ToString() + "B_Otsu.png");
 
-            //CvInvoke.cvAdaptiveThreshold(frameImagePtr,BinaryImage, maxValue, Emgu.CV.CvEnum.ADAPTIVE_THRESHOLD_TYPE.CV_ADAPTIVE_THRESH_MEAN_C, Emgu.CV.CvEnum.THRESH.CV_THRESH_BINARY_INV, 5, 1 );
-            CvInvoke.cvThreshold(framePtr, binaryPrt, 150, 255, Emgu.CV.CvEnum.THRESH.CV_THRESH_OTSU);
-            BinaryImage.Save(path1 + numFrames.ToString() + "B_Otsu.png");
-           
-            //BinaryImage = binarySauvola(BinaryImage);
-            //BinaryImage.Save(path1 + numFrames.ToString() + "B.png");  
-            //BinaryImage = binaryNiBlack(BinaryImage);
-            //BinaryImage.Save(path1 + numFrames.ToString() + "B.png"); 
-            //
+            BinaryImage = openingOperation(BinaryImage);
+            BinaryImage = closeOperation(BinaryImage);
+            //BinaryImage.Save(path1 + numFrames.ToString() + "B_OC.png");
+
 
             using (MemStorage storage = new MemStorage())
             {
@@ -282,7 +275,7 @@ namespace SystemV1
 
             for (int i = 0; i < elements; i++)
             {
-                Double minDistance = 18;
+                Double minDistance = 15;
                 Double maxAngle = 60;
                 Double angle;
                 int antecesor;

@@ -56,8 +56,10 @@ namespace SystemV1
         public int numFrames = 1;
         private int numFrameHandDetected = 1;
         //Escribir el archivito de las caracteristicas.
-        private string pathFront = @"C:\SystemTest\V7\Test2\Front\Input\";
-        private string pathSide = @"C:\SystemTest\V7\Test2\Side\Input\"; 
+        private string pathFront = @"C:\CaptureGestures\90L\Alma\2\";
+        private string pathData = @"C:\CaptureGestures\90L\Alma\2\Test\";
+        private string pathTF = @"C:\CaptureGestures\90L\Alma\2\Test\Front\";
+        private string pathTS = @"C:\CaptureGestures\90L\Alma\2\Test\Side\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -118,7 +120,7 @@ namespace SystemV1
             //-------------------------------------------------------------------------------
             //Get actual frame and the next frame. To delate the frames with positive falses.  
             imagenKinectGray1 = new Image<Gray, byte>(pathFront + "Front" + "_" + numFrames.ToString() + "_1_1" + ".png"); //Poner el folder
-            imagenKinectGray2 = new Image<Gray, byte>(pathSide + "Side" + "_" + numFrames.ToString() + "_1_1" + ".png"); 
+            imagenKinectGray2 = new Image<Gray, byte>(pathFront + "Side" + "_" + numFrames.ToString() + "_1_1" + ".png"); 
 
             returnHandDetectorFrontActual = HandDetection.Detection(imagenKinectGray1, positionCenterHandF);
             returnHandDetectorSideActual = HandDetection.Detection(imagenKinectGray2, positionCenterHandS);
@@ -130,16 +132,16 @@ namespace SystemV1
             //Set the bool variables,
             if (RoiKinectFrontActual.Length != 0)
                 detectRoiFront = true;
-            //if (RoiKinectSideActual.Length != 0)
-             //   detectRoiSide = true; 
+            if (RoiKinectSideActual.Length != 0)
+                detectRoiSide = true; 
 
             //Guardar las imagenes
             //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{ 
             int numHsFront = RoiKinectFrontActual.Length;
             int numHsSide = RoiKinectSideActual.Length;
 
-            imagenKinectGray1.Save(pathFront + "DFront_" + numFrames.ToString() + ".png");
-            imagenKinectGray2.Save(pathSide + "DSide_" + numFrames.ToString() + ".png"); 
+            imagenKinectGray1.Save(pathTF + "DFront_" + numFrames.ToString() + ".png");
+            imagenKinectGray2.Save(pathTS + "DSide_" + numFrames.ToString() + ".png"); 
             //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 
             if (detectRoiFront)
@@ -148,15 +150,21 @@ namespace SystemV1
 
                 if (returnGettingSegK1 != null)
                 {
-                    centerHandFront = (PointF)returnGettingSegK1[0];                //Meter en una funcion 
+                    try
+                    {
+                        centerHandFront = (PointF)returnGettingSegK1[0];                //Meter en una funcion 
 
-                    positionRoi1Front = RoiKinectFrontActual[0].Location;
-                    positionCenterHandF.X = positionRoi1Front.X + centerHandFront.X;
-                    positionCenterHandF.Y = positionRoi1Front.Y + centerHandFront.Y;
+                        positionRoi1Front = RoiKinectFrontActual[0].Location;
+                        positionCenterHandF.X = positionRoi1Front.X + centerHandFront.X;
+                        positionCenterHandF.Y = positionRoi1Front.Y + centerHandFront.Y;
 
-                    CircleF centrillo = new CircleF(positionCenterHandF, 5f);
+                        CircleF centrillo = new CircleF(positionCenterHandF, 5f);
 
-                    imagenKinectGray1.Draw(centrillo, new Gray(150), 3);
+                        imagenKinectGray1.Draw(centrillo, new Gray(150), 3);
+                    }
+                    catch (Exception)
+                    { 
+                    }
                 }
             } 
 
@@ -164,21 +172,30 @@ namespace SystemV1
             {
                 returnGettingSegK2 = GettingSegmentationK2.HandConvexHull(imagenKinectGray2, RoiKinectSideActual[0]);
 
-                if (returnGettingSegK2 != null)
+                if (returnGettingSegK2 != null )
                 {
-                    centerHandSide = (PointF)returnGettingSegK2[0];                //Meter en una funcion 
+                    try
+                    {
+                        centerHandSide = (PointF)returnGettingSegK2[0];                //Meter en una funcion 
 
-                    positionRoi1Side = RoiKinectSideActual[0].Location;
-                    positionCenterHandS.X = positionRoi1Side.X + centerHandSide.X;
-                    positionCenterHandS.Y = positionRoi1Side.Y + centerHandSide.Y;
+                        positionRoi1Side = RoiKinectSideActual[0].Location;
+                        positionCenterHandS.X = positionRoi1Side.X + centerHandSide.X;
+                        positionCenterHandS.Y = positionRoi1Side.Y + centerHandSide.Y;
 
-                    CircleF centrillo = new CircleF(positionCenterHandS, 5f);
+                        CircleF centrillo = new CircleF(positionCenterHandS, 5f);
 
-                    imagenKinectGray2.Draw(centrillo, new Gray(150), 3);
+                        imagenKinectGray2.Draw(centrillo, new Gray(150), 3);
+                    } 
+                    catch (Exception) 
+                    {
+                    
+                    }
                 }
             }
 
-            SaveFeaturesText.FeaturesTwoKTest(numFrames, returnGettingSegK1, returnGettingSegK2, pathFront + "Clasificar.txt"); 
+            SaveFeaturesText.FeaturesTwoKTest(numFrames, returnGettingSegK1, returnGettingSegK2, pathFront + "Clasificar2Features.txt");
+            SaveFeaturesText.FeaturesOneTest(numFrames, returnGettingSegK1, pathFront + "Clasificar1feature.txt");
+            
 
             DepthImageK1.Source = imagetoWriteablebitmap(imagenKinectGray1);
             DepthImageK2.Source = imagetoWriteablebitmap(imagenKinectGray2); 
@@ -213,16 +230,7 @@ namespace SystemV1
             return ImagenWriteablebitmap;
         }  
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-        
-        //::::::::::::::::::::::::::::::::::::::::::::::::
-        private void ComputeCenterHand()
-        { 
-            
-        }
-
-        //:::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
+       
         //:::::::::::::::Stop the kinect stream::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {

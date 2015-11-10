@@ -23,7 +23,7 @@ namespace SystemV1
         public List<Object> Detection(Image<Gray, Byte> frame, PointF centerHand)
         {   
             List<Object> listReturn = new List<object>(2);
-            haar = new CascadeClassifier(@"C:\Users\AmericaIvone\Documents\SystemVersions\MySystemV7\classifier\cascade.xml");
+            haar = new CascadeClassifier(@"C:\Users\America\Documents\SystemVersions\MySystemV7\classifier\cascade.xml");
             
 
             if (frame != null)
