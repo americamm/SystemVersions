@@ -45,7 +45,7 @@ namespace SystemV1
         private Int32Rect WriteablebitmapRect;
         private int WriteablebitmapStride;
 
-        private System.Drawing.Rectangle[] RectArrayPrev; 
+        private System.Drawing.Rectangle[] RectArrayPrev;
 
         //Position Center of hands  
         public PointF positionCenterHandF = new PointF();
@@ -53,13 +53,14 @@ namespace SystemV1
         //para contar los cuadros por segundo 
         public int fps = 1;
         public int sec = 1;
-        public int numFrames = 1;
+        public int numFrames = 3;
         private int numFrameHandDetected = 1;
         //Escribir el archivito de las caracteristicas.
-        private string pathFront = @"C:\CaptureGestures\90L\Alma\2\";
-        private string pathData = @"C:\CaptureGestures\90L\Alma\2\Test\";
-        private string pathTF = @"C:\CaptureGestures\90L\Alma\2\Test\Front\";
-        private string pathTS = @"C:\CaptureGestures\90L\Alma\2\Test\Side\"; 
+        private string pathFront = @"C:\SystemTest\V7\Test3\Front\Input\";
+        private string pathSide = @"C:\SystemTest\V7\Test3\Side\Input\"; 
+        //private string pathData = @"C:\SystemTest\V7\Test3";
+        //private string pathTF = @"C:\CaptureGestures\90L\Alma\2\Test\Front\";
+        //private string pathTS = @"C:\CaptureGestures\90L\Alma\2\Test\Side\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -120,7 +121,7 @@ namespace SystemV1
             //-------------------------------------------------------------------------------
             //Get actual frame and the next frame. To delate the frames with positive falses.  
             imagenKinectGray1 = new Image<Gray, byte>(pathFront + "Front" + "_" + numFrames.ToString() + "_1_1" + ".png"); //Poner el folder
-            imagenKinectGray2 = new Image<Gray, byte>(pathFront + "Side" + "_" + numFrames.ToString() + "_1_1" + ".png"); 
+            imagenKinectGray2 = new Image<Gray, byte>(pathSide + "Side" + "_" + numFrames.ToString() + "_1_1" + ".png"); 
 
             returnHandDetectorFrontActual = HandDetection.Detection(imagenKinectGray1, positionCenterHandF);
             returnHandDetectorSideActual = HandDetection.Detection(imagenKinectGray2, positionCenterHandS);
@@ -140,8 +141,8 @@ namespace SystemV1
             int numHsFront = RoiKinectFrontActual.Length;
             int numHsSide = RoiKinectSideActual.Length;
 
-            imagenKinectGray1.Save(pathTF + "DFront_" + numFrames.ToString() + ".png");
-            imagenKinectGray2.Save(pathTS + "DSide_" + numFrames.ToString() + ".png"); 
+            imagenKinectGray1.Save(pathFront + "DF_" + numFrames.ToString() + ".png");
+            imagenKinectGray2.Save(pathSide + "DS_" + numFrames.ToString() + ".png"); 
             //}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 
             if (detectRoiFront)

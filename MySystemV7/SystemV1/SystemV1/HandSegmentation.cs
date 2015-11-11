@@ -24,9 +24,12 @@ namespace SystemV1
         private double convexHullArea;
         private double convexHullPerimeter;
 
+        private double resizeInt = 0.5;
+        private double scale = 1; 
+
         //Save the frames to check the noise remove in the roi, also check the bnarization 
-        private string path1 = @"C:\CaptureGestures\90L\Alma\1\Test\";
-        private string path2 = @"C:\SystemTest\V7\Test2\Side\Convex\";
+        private string path1 = @"C:\SystemTest\V7\Test3\Front\Convex\";
+        private string path2 = @"C:\SystemTest\V7\Test3\";
         private int numFrames = 1; 
                     
         public int numero;
@@ -179,13 +182,15 @@ namespace SystemV1
             BinaryImage = frame.Copy(Roi);
             //BinaryImage.Save(path1 + numFrames.ToString() + ".png");
 
+            //BinaryImage = BinaryImage.Resize(resizeInt, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR);
+
             frameImagePtr= BinaryImage; 
 
             IntPtr framePtr = frameImagePtr.Ptr;
             IntPtr binaryPrt = BinaryImage.Ptr; 
             
             CvInvoke.cvThreshold(framePtr, binaryPrt, 0, 255, Emgu.CV.CvEnum.THRESH.CV_THRESH_OTSU);
-            //BinaryImage.Save(path1 + numFrames.ToString() + "B_Otsu.png");
+            BinaryImage.Save(path1 + numFrames.ToString() + "B_Otsu.png");
 
             BinaryImage = openingOperation(BinaryImage);
             BinaryImage = closeOperation(BinaryImage);
@@ -259,10 +264,10 @@ namespace SystemV1
 
             for (int i = 0; i < defects.Total; i++)
             {
-                startPoints[i] = new PointF((float)defectsArray[i].StartPoint.X, (float)defectsArray[i].StartPoint.Y);
-                depthPoints[i] = new PointF((float)defectsArray[i].DepthPoint.X, (float)defectsArray[i].DepthPoint.Y);
+                startPoints[i] = new PointF((float)((defectsArray[i].StartPoint.X)*scale), (float)((defectsArray[i].StartPoint.Y)*2));
+                depthPoints[i] = new PointF((float)((defectsArray[i].DepthPoint.X)*scale), (float)((defectsArray[i].DepthPoint.Y)*2));
 
-                DistanceDepth[i] = defectsArray[i].Depth;
+                DistanceDepth[i] = (defectsArray[i].Depth)*scale;
 
                 CircleF startCircle = new CircleF(startPoints[i], 5f);
                 CircleF depthCircle = new CircleF(depthPoints[i], 5f);
@@ -275,7 +280,7 @@ namespace SystemV1
 
             for (int i = 0; i < elements; i++)
             {
-                Double minDistance = 15;
+                Double minDistance = 20;
                 Double maxAngle = 60;
                 Double angle;
                 int antecesor;
@@ -311,12 +316,12 @@ namespace SystemV1
             CircleF circulito = Emgu.CV.PointCollection.MinEnclosingCircle(depthPoints);
             PointF centro = circulito.Center; 
             //HandSegmentation.Save(path3 + "Dedos" + numFrames.ToString() + ".png");
-            /*using (StreamWriter file = new StreamWriter(path3 + "Dedos.txt", true))
+            using (StreamWriter file = new StreamWriter(path1 + "Dedos.txt", true))
             {
                 file.Write(numFrames.ToString() + " ");
                 file.Write(fingerNum.ToString() + " ");
                 file.Write(Environment.NewLine);
-            } */
+            } 
 
             for (int j = 0; j < 5; j++)
             {
