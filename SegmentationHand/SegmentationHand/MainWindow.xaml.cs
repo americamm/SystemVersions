@@ -331,7 +331,7 @@ namespace SegmentationHand
             PointF[] PositionFingerTips = new PointF[5];
             PointF[] PositionRootFinger = new PointF[5]; 
             int[] anglesFingertipsCenter = new int[5]; 
-            int[] indexDepth = new int[4];  
+            int[] indexDepth = new int[5];  
             
 
             for (int i = 0; i < defects.Total; i++)
