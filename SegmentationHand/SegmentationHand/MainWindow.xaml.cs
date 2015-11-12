@@ -36,10 +36,10 @@ namespace SegmentationHand
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization  
-        private string path1 = @"C:\CaptureKinect\Binarization\test18\frames\";
-        private string path2 = @"C:\CaptureKinect\Binarization\test18\binary\";
-        private string path3 = @"C:\CaptureKinect\Binarization\test18\convex\";
-        private string path4 = @"C:\CaptureKinect\Binarization\test18\opening\";
+        private string path1 = @"C:\CaptureKinect\Binarization\test19\frames\";
+        private string path2 = @"C:\CaptureKinect\Binarization\test19\binary\";
+        private string path3 = @"C:\CaptureKinect\Binarization\test19\convex\";
+        private string path4 = @"C:\CaptureKinect\Binarization\test19\opening\";
         private int numFrames = 1;
 
         public int numero;
@@ -67,10 +67,10 @@ namespace SegmentationHand
                 //frameRoi.Save(path4 + numFrames.ToString() + "E_.png"); 
 
                 openingImage = closeOperation(openingImage);
-                frameRoi.Save(path4 + numFrames.ToString() + "_C.png"); 
+                //frameRoi.Save(path4 + numFrames.ToString() + "_C.png"); 
 
                 openingImage = binarySauvola(openingImage);
-                openingImage.Save(path2 + numFrames.ToString() + ".png");
+                //openingImage.Save(path2 + numFrames.ToString() + ".png");
 
                 //StructuringElementEx SElement;
                 //SElement = new StructuringElementEx(3,3, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_RECT);
@@ -154,15 +154,15 @@ namespace SegmentationHand
             int widthFrame = handFrame.Width;
             int heigthFrame = handFrame.Height;
 
-            int sizeSW = 95;
+            int sizeSW = 3;
             int sizeSW_w = sizeSW; //Size of the slinding window 
             int sizeSW_h = sizeSW; //Size of the slinding window 
             int halfWidth = (int)(Math.Floor((double)sizeSW / 2));
             int halfHeigth = (int)(Math.Floor((double)sizeSW / 2));
             int binaryWidth = widthFrame + (halfWidth * 2);
             int binaryHeigth = heigthFrame + (halfHeigth * 2);
-            double k = .6;
-            double R = 128; 
+            double k = .3;
+            double R = 256; 
 
 
             Image<Gray, Byte> binaryFrameCalculation = new Image<Gray, Byte>(binaryWidth, binaryHeigth);
@@ -228,10 +228,10 @@ namespace SegmentationHand
             Rder = mediaValue.v0 + (Kder * desest.v0); 
 
             handImage = handImage.InRange(new Gray(Rizq), new Gray(Rder));
-            handImage.Save(path2 + numFrames.ToString() + "B.png");
+            //handImage.Save(path2 + numFrames.ToString() + "B.png");
 
             handImage = openingOperation(handImage);
-            handImage.Save(path2 + numFrames.ToString() + "_O.png");
+            //handImage.Save(path2 + numFrames.ToString() + "_O.png");
 
             return handImage;
         }//end BinaryThresholdNiBlack  
@@ -304,11 +304,11 @@ namespace SegmentationHand
                     convexHullArea = Hull.Area;
                     convexHullPerimeter = Hull.Perimeter;
 
-                    frameRoi.Draw(Hull, new Gray(155), 1);
-                    frameRoi.Draw(biggestContour, new Gray(100), 1);
-                    frameRoi.Save(path3 + "ConvexHull_" + numFrames.ToString() + ".png");
+                    //frameRoi.Draw(Hull, new Gray(155), 1);
+                    //frameRoi.Draw(biggestContour, new Gray(100), 1);
+                    //frameRoi.Save(path3 + "ConvexHull_" + numFrames.ToString() + ".png");
 
-                    ListReturn = GetFingersHand(frameRoi);
+                    ListReturn = GetFingers(frameRoi);
                     ListReturn.Add(contourPerimeter);
                     ListReturn.Add(contourArea);
                     ListReturn.Add(convexHullPerimeter);
@@ -324,11 +324,15 @@ namespace SegmentationHand
 
         private List<object> GetFingers(Image<Gray, Byte> HandSegmentation)
         {
-            int fingerNum = 0;
+            int fingerNum = 0; 
+            int numDefects = defectsArray.Length; 
             List<object> ListReturn = new List<object>(3); //This list has 
-            PointF[] PointsMakeOalmCircle = new PointF[defectsArray.Length];
+            PointF[] PositionDepth = new PointF[numDefects];
             PointF[] PositionFingerTips = new PointF[5];
-            int[] anglesFingertipsCenter = new int[5];
+            PointF[] PositionRootFinger = new PointF[5]; 
+            int[] anglesFingertipsCenter = new int[5]; 
+            int[] indexDepth = new int[4];  
+            
 
             for (int i = 0; i < defects.Total; i++)
             {
@@ -339,45 +343,80 @@ namespace SegmentationHand
                 //LineSegment2D startDepthLine = new LineSegment2D(defectsArray[i].StartPoint, defectsArray[i].DepthPoint);
                 //LineSegment2D depthEndLine = new LineSegment2D(defectsArray[i].DepthPoint, defectsArray[i].EndPoint);
 
-                CircleF startCircle = new CircleF(startPoint, 5f);
-                CircleF depthCircle = new CircleF(depthPoint, 5f);
-                CircleF endCircle = new CircleF(endPoint, 5f);
-
-                PointsMakeOalmCircle[i] = depthPoint;
-
+                CircleF startCircle = new CircleF(startPoint, 3f);
+                CircleF depthCircle = new CircleF(depthPoint, 3f);
+                CircleF endCircle = new CircleF(endPoint, 3f);
+                
+                PositionDepth[i] = depthPoint; 
+                
                 //Custom heuristic based on some experiment, double check it before use
                 if ((startCircle.Center.Y < box.center.Y || depthCircle.Center.Y < box.center.Y) && (startCircle.Center.Y < depthCircle.Center.Y) && (Math.Sqrt(Math.Pow(startCircle.Center.X - depthCircle.Center.X, 2) + Math.Pow(startCircle.Center.Y - depthCircle.Center.Y, 2)) > box.size.Height / 6.5))
                 { 
                     fingerNum++; //Number of the fingers
-                    PositionFingerTips[fingerNum - 1] = startPoint; 
-                    HandSegmentation.Draw(depthCircle, new Gray(80), 2);
-                    HandSegmentation.Draw(startCircle, new Gray(100), 2);
+                    PositionFingerTips[fingerNum - 1] = startPoint;
+                    indexDepth[fingerNum - 1] = i; 
+                    HandSegmentation.Draw(depthCircle, new Gray(110), 2);
+                    HandSegmentation.Draw(startCircle, new Gray(80), 2);
                 }  
-
+                
             }
-
-                using (StreamWriter file = new StreamWriter(path3 + "Dedos.txt", true))
-                {
-                        file.Write(numFrames.ToString() + " ");
-                        file.Write(fingerNum.ToString() + " ");
-                        file.Write(PositionFingerTips.Length.ToString());
-                        file.Write(Environment.NewLine); 
-                }
-            
-            HandSegmentation.Save(path3 + "Dedos_" + numFrames.ToString() + ".png");
-
-            CircleF circulito = Emgu.CV.PointCollection.MinEnclosingCircle(PointsMakeOalmCircle); //Circle, represent the palm of the hand
-            PointF centro = circulito.Center;  //center of the hand, there is the center of the circle 
-
-            for (int j = 0; j < 5; j++)
+ 
+            using (StreamWriter file = new StreamWriter(path3 + "Dedos.txt", true))
             {
-                anglesFingertipsCenter[j] = getAngleCenterFinger(PositionFingerTips[j], centro);
+                file.Write(numFrames.ToString() + " ");
+                file.Write(fingerNum.ToString() + " ");
+                file.Write(Environment.NewLine); 
+            } 
+
+            //MCvBox2D caja = Emgu.CV.PointCollection.MinAreaRect(PositionDepth);
+            //HandSegmentation.Draw(caja, new Gray(50), 3); 
+
+            CircleF centerBoxDraw = new CircleF(box.center, 4f);
+            HandSegmentation.Draw(centerBoxDraw, new Gray(100), 2);
+            
+
+            if (fingerNum > 0)
+            {  
+                int indexActual; 
+                int indexPrevous; 
+                //Get the features of the fingers:::::::::::::::::::::::::::::::::::::::::::::::::::::::
+                for (int j = 0; j < fingerNum; j++)
+                {  
+                    //Get the angles to the center of the hand::::::::::::::::::::::::::::::::::::::::::
+                    anglesFingertipsCenter[j] = getAngleCenterFinger(PositionFingerTips[j], box.center); 
+
+                    //Get the root of the fingers:::::::::::::::::::::::::::
+                    if (indexDepth[0] == 0)
+                    {
+                        indexActual = indexDepth[j];
+                        indexPrevous = numDefects - 1;
+                    }
+                    else
+                    {
+                        /*if (fingerNum == 1)
+                        {
+                            indexActual = indexDepth[j];
+                            indexPrevous = indexActual - 1;
+                        }*/
+                        indexActual = indexDepth[j];
+                        indexPrevous = indexActual - 1;
+
+                        int a = 0;
+                    } 
+
+                    //PositionRootFinger[j] = getFingerRoot(PositionDepth[indexActual], PositionDepth[indexPrevous]);
+
+                    //CircleF midPoint = new CircleF(PositionRootFinger[j], 3f);
+                    //HandSegmentation.Draw(midPoint, new Gray(60), 2); 
+                }
             }
 
-            ListReturn.Add(centro);
+            ListReturn.Add(box.center);
             ListReturn.Add(fingerNum);
             ListReturn.Add(anglesFingertipsCenter);
-
+            
+            HandSegmentation.Save(path3 + "Dedos_" + numFrames.ToString() + ".png");
+            
             return ListReturn;
         }//end get fingers  
 
@@ -471,7 +510,6 @@ namespace SegmentationHand
             return angle;  
         }//end  getAngleBetweenStart 
 
-
         private double slope(PointF  p1, PointF p2)
         {
             double slope;
@@ -481,17 +519,26 @@ namespace SegmentationHand
             return slope; 
         }//end slope  
 
-
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
         private int getAngleCenterFinger(PointF fingerPosition, PointF centerHand)
-        {
-            float yOffset = centerHand.Y - fingerPosition.Y;
-            float xOffset = centerHand.X - fingerPosition.X;
-
+        {   
+            float yOffset = Math.Abs( fingerPosition.Y - centerHand.Y);
+            float xOffset = Math.Abs( fingerPosition.X- centerHand.X);
+              
             double thethaRadias = Math.Atan2(yOffset, xOffset);
-            double angle = thethaRadias * (180 / Math.PI);
+            double angle = 90 - (thethaRadias * (180 / Math.PI));
             return (int)angle;
+        }
+
+        private PointF getFingerRoot(PointF depthActual, PointF depthPrevious)
+        {
+            PointF root = new PointF();
+
+            root.X = (depthActual.X + depthPrevious.X) / 2;
+            root.Y = (depthActual.Y + depthPrevious.Y) / 2;
+
+            return root;
         }
 
         //::::::Method to save de media and the desviation standar, delate when the binarization its over. 

@@ -25,125 +25,14 @@ namespace SystemV1
         private double convexHullPerimeter;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization 
-        private string path1 = @"C:\SystemTest\V8\Test2\Front\Convex\";
-        private string path2 = @"C:\SystemTest\V8\Test2\";
-        private int numFrames = 1; 
-                    
+        private string path1 = @"C:\SystemTest\V8\Test1\Front\Convex\";
+        
+        private int numFrames = 1;            
         public int numero;
         //:::::::::::::::::fin variables::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-        //:::::::::::::Method for make the image binary::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-        //the binarization is inspired in NiBlanck banarization, but in this case, we use just the average of the image. 
-        //openinOperation() remove the noise of the binarized image, using morphological operation, we use opening. 
-
-        private Image<Gray, Byte> binaryNiBlack(Image<Gray, Byte> handFrame)
-        {
-            int widthFrame = handFrame.Width;
-            int heigthFrame = handFrame.Height;
-
-            int sizeSW = 3;
-            int sizeSW_w = sizeSW; //Size of the slinding window 
-            int sizeSW_h = sizeSW; //Size of the slinding window 
-            int halfWidth = (int)(Math.Floor((double)sizeSW / 2));
-            int halfHeigth = (int)(Math.Floor((double)sizeSW / 2));
-            int binaryWidth = widthFrame + (halfWidth * 2);         //Size of tyhe image where the calculation is make. 
-            int binaryHeigth = heigthFrame + (halfHeigth * 2);
-            double k = 0;
-
-            Image<Gray, Byte> binaryFrameCalculation = new Image<Gray, Byte>(binaryWidth, binaryHeigth);
-            binaryFrameCalculation.SetZero();
-            Rectangle roiHand = new Rectangle(halfWidth, halfHeigth, widthFrame, heigthFrame);
-            binaryFrameCalculation.ROI = roiHand;
-            handFrame.CopyTo(binaryFrameCalculation);
-            binaryFrameCalculation.ROI = Rectangle.Empty;
-
-            byte[, ,] byteData = handFrame.Data;
-            
-            for (int i = halfHeigth; i < heigthFrame + halfHeigth; i++)
-            {
-                for (int j = halfWidth; j < widthFrame + halfWidth; j++)
-                {
-                    Gray media;
-                    MCvScalar desest;
-                    MCvScalar mediaValue;
-                    double threshold;
-                    MCvBox2D roi;
-
-                    Image<Gray, Byte> imageCalculate = new Image<Gray, Byte>(sizeSW_w, sizeSW_h);
-                    roi = new MCvBox2D(new System.Drawing.Point(j, i), new System.Drawing.Size(sizeSW_w, sizeSW_h), 0);
-
-                    imageCalculate = binaryFrameCalculation.Copy(roi);
-                    binaryFrameCalculation.ROI = Rectangle.Empty;
-                    imageCalculate.AvgSdv(out media, out desest);
-                    mediaValue = media.MCvScalar;
-                    threshold = mediaValue.v0 + (k * desest.v0);
-
-                    if (byteData[i - halfHeigth, j - halfWidth, 0] < threshold)
-                        byteData[i - halfHeigth, j - halfWidth, 0] = 255;
-                    else
-                        byteData[i - halfHeigth, j - halfWidth, 0] = 0;
-                }
-            }
-
-            handFrame.Data = byteData;
-            return handFrame;
-        }
-
-        private Image<Gray, Byte> binarySauvola(Image<Gray, Byte> handFrame)
-        {
-            int widthFrame = handFrame.Width;
-            int heigthFrame = handFrame.Height;
-
-            int sizeSW = 100;
-            int sizeSW_w = sizeSW; //Size of the slinding window 
-            int sizeSW_h = sizeSW; //Size of the slinding window 
-            int halfWidth = (int)(Math.Floor((double)sizeSW / 2));
-            int halfHeigth = (int)(Math.Floor((double)sizeSW / 2));
-            int binaryWidth = widthFrame + (halfWidth * 2);
-            int binaryHeigth = heigthFrame + (halfHeigth * 2);
-            double k = 0.009;
-            double R = 128;
-
-
-            Image<Gray, Byte> binaryFrameCalculation = new Image<Gray, Byte>(binaryWidth, binaryHeigth);
-            binaryFrameCalculation.SetZero();
-            Rectangle roiHand = new Rectangle(halfWidth, halfHeigth, widthFrame, heigthFrame);
-            binaryFrameCalculation.ROI = roiHand;
-            handFrame.CopyTo(binaryFrameCalculation);
-            binaryFrameCalculation.ROI = Rectangle.Empty;
-
-            byte[, ,] byteData = handFrame.Data;
-
-            for (int i = halfHeigth; i < heigthFrame + halfHeigth; i++)
-            {
-                for (int j = halfWidth; j < widthFrame + halfWidth; j++)
-                {
-                    Gray media;
-                    MCvScalar desest;
-                    MCvScalar mediaValue;
-                    double threshold;
-                    MCvBox2D roi;
-
-                    Image<Gray, Byte> imageCalculate = new Image<Gray, Byte>(sizeSW_w, sizeSW_h);
-                    roi = new MCvBox2D(new System.Drawing.Point(j, i), new System.Drawing.Size(sizeSW_w, sizeSW_h), 0);
-
-                    imageCalculate = binaryFrameCalculation.Copy(roi);
-                    binaryFrameCalculation.ROI = Rectangle.Empty;
-                    imageCalculate.AvgSdv(out media, out desest);
-                    mediaValue = media.MCvScalar;
-                    threshold = mediaValue.v0 * (1 + (k * ((desest.v0 / R) - 1)));
-
-                    if (byteData[i - halfHeigth, j - halfWidth, 0] < threshold)
-                        byteData[i - halfHeigth, j - halfWidth, 0] = 255;
-                    else
-                        byteData[i - halfHeigth, j - halfWidth, 0] = 0;
-                }
-            }
-
-            handFrame.Data = byteData;
-            return handFrame;
-        }
+        //:::::::::::::Morphological operations ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
         private Image<Gray, Byte> openingOperation(Image<Gray, Byte> binaryFrame)
         {
@@ -223,7 +112,7 @@ namespace SystemV1
                     box = biggestContour.GetMinAreaRect(); 
                     points = box.GetVertices();
 
-                    CircleF centerBox = box.center(); 
+                    CircleF centerBoxDraw = new CircleF(box.center, 4f); 
 
                     contourArea = result2;
                     contourPerimeter = biggestContour.Perimeter;
@@ -232,10 +121,10 @@ namespace SystemV1
 
                     BinaryImage.Draw(Hull, new Gray(155), 1);
                     BinaryImage.Draw(box, new Gray(100), 1);
-                    BinaryImage.Draw(box.center(), new Gray(200), 1); 
+                    BinaryImage.Draw(centerBoxDraw, new Gray(200), 1); 
                     BinaryImage.Save(path1 + "ConvexHull_" + numFrames.ToString() + ".png");
 
-                    ListReturn = GetFingersHand(BinaryImage);
+                    ListReturn = GetFingers(BinaryImage);
                     ListReturn.Add(contourPerimeter);
                     ListReturn.Add(contourArea);
                     ListReturn.Add(convexHullPerimeter);
@@ -249,72 +138,45 @@ namespace SystemV1
         }//end HandConvexHull  
 
 
-        private List<object> GetFingersHand(Image<Gray, Byte> HandSegmentation)
+        private List<object> GetFingers(Image<Gray, Byte> HandSegmentation)
         {
             int fingerNum = 0;
-            PointF[] startPoints = new PointF[defectsArray.Length];
-            PointF[] depthPoints = new PointF[defectsArray.Length];
-            Double[] DistanceDepth = new Double[defectsArray.Length];
-            List<object> ListReturn = new List<object>(3); //This list has    
-            PointF[] PointsMakeOalmCircle = new PointF[defectsArray.Length];
+            List<object> ListReturn = new List<object>(3); //This list has 
             PointF[] PositionFingerTips = new PointF[5];
             int[] anglesFingertipsCenter = new int[5];
 
-
             for (int i = 0; i < defects.Total; i++)
             {
-                startPoints[i] = new PointF((float)defectsArray[i].StartPoint.X, (float)defectsArray[i].StartPoint.Y);
-                depthPoints[i] = new PointF((float)defectsArray[i].DepthPoint.X, (float)defectsArray[i].DepthPoint.Y);
+                PointF startPoint = new PointF((float)defectsArray[i].StartPoint.X, (float)defectsArray[i].StartPoint.Y);
+                PointF depthPoint = new PointF((float)defectsArray[i].DepthPoint.X, (float)defectsArray[i].DepthPoint.Y);
+                PointF endPoint = new PointF((float)defectsArray[i].EndPoint.X, (float)defectsArray[i].EndPoint.Y);
 
-                DistanceDepth[i] = defectsArray[i].Depth;
+                CircleF startCircle = new CircleF(startPoint, 3f);
+                CircleF depthCircle = new CircleF(depthPoint, 3f);
+                CircleF endCircle = new CircleF(endPoint, 3f);
 
-                CircleF startCircle = new CircleF(startPoints[i], 5f);
-                CircleF depthCircle = new CircleF(depthPoints[i], 5f);
-                HandSegmentation.Draw(startCircle, new Gray(60), 2);
-                HandSegmentation.Draw(depthCircle, new Gray(60), 2);
-                //HandSegmentation.Save(path3 + "Dedos_Start" + numFrames.ToString() + ".png");
+
+                //Count Fingers raised
+                if ((startCircle.Center.Y < box.center.Y || depthCircle.Center.Y < box.center.Y) && (startCircle.Center.Y < depthCircle.Center.Y) && (Math.Sqrt(Math.Pow(startCircle.Center.X - depthCircle.Center.X, 2) + Math.Pow(startCircle.Center.Y - depthCircle.Center.Y, 2)) > (box.size.Height / 6.5))) 
+                {
+                    fingerNum++; //Number of the fingers
+                    PositionFingerTips[fingerNum - 1] = startPoint;
+                    HandSegmentation.Draw(startCircle, new Gray(82), 2); 
+                    HandSegmentation.Draw(depthCircle, new Gray(82), 2); 
+                }
             }
+            HandSegmentation.Save(path1 + numFrames.ToString() + "_Dedos.png");
+     
 
-            int elements = DistanceDepth.Length;
-
-            for (int i = 0; i < elements; i++)
+            for (int j = 0; j < fingerNum; j++)
             {
-                Double minDistance = 20;
-                Double maxAngle = 60;
-                Double angle;
-                int antecesor;
-                int sucesor;
-
-                if (DistanceDepth[i] < minDistance)
-                    continue;
-
-                if (i == 0)
-                    antecesor = elements - 1;
-                else
-                    antecesor = i - 1;
-
-                if (i == (elements - 1))
-                    sucesor = 0;
-                else
-                    sucesor = i + 1;
-
-                angle = getAngleBetweenStart(startPoints[i], depthPoints[antecesor], depthPoints[sucesor]);
-
-                if (angle >= maxAngle)
-                    continue;
-
-                fingerNum++;
-
-                CircleF startCircle = new CircleF(startPoints[i], 3f);
-                CircleF depthCircle = new CircleF(depthPoints[i], 3f);
-                HandSegmentation.Draw(startCircle, new Gray(120), 2);
-                HandSegmentation.Draw(depthCircle, new Gray(120), 2);
-                HandSegmentation.Save(path1 + numFrames.ToString() + "Dedos"  + ".png"); 
+                anglesFingertipsCenter[j] = getAngleCenterFinger(PositionFingerTips[j], box.center);
             }
 
-            CircleF circulito = Emgu.CV.PointCollection.MinEnclosingCircle(depthPoints);
-            PointF centro = circulito.Center; 
-            //HandSegmentation.Save(path3 + "Dedos" + numFrames.ToString() + ".png");
+            ListReturn.Add(box.center);
+            ListReturn.Add(fingerNum);
+            ListReturn.Add(anglesFingertipsCenter);
+
             using (StreamWriter file = new StreamWriter(path1 + "Dedos.txt", true))
             {
                 file.Write(numFrames.ToString() + " ");
@@ -322,19 +184,22 @@ namespace SystemV1
                 file.Write(Environment.NewLine);
             } 
 
-            for (int j = 0; j < 5; j++)
-            {
-                anglesFingertipsCenter[j] = getAngleCenterFinger(PositionFingerTips[j], centro);
-            }
-
-            ListReturn.Add(centro);
-            ListReturn.Add(fingerNum);
-            ListReturn.Add(anglesFingertipsCenter);
-
             return ListReturn;
-        }//end GetFingersHand
+        }//end get fingers  
 
-        //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 
+        //::::Angle to the line of teh fingertip to teh center of teh hand::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+        private int getAngleCenterFinger(PointF fingerPosition, PointF centerHand)
+        {
+            float yOffset =  Math.Abs( fingerPosition.Y - centerHand.Y);
+            float xOffset =  Math.Abs( fingerPosition.X - centerHand.X);
+
+            double thethaRadias = Math.Atan2(yOffset, xOffset); 
+            double angle = 90 - (thethaRadias * (180 / Math.PI));
+            return (int)angle; 
+        }
+
         //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
         private double getAngleBetweenStart(PointF Pi, PointF Pia, PointF Pis)
@@ -364,32 +229,7 @@ namespace SystemV1
 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-        private int getAngleCenterFinger(PointF fingerPosition, PointF centerHand)
-        {
-            float yOffset = centerHand.Y - fingerPosition.Y;
-            float xOffset = centerHand.X - fingerPosition.X;
-
-            double thethaRadias = Math.Atan2(yOffset, xOffset); 
-            double angle = thethaRadias * (180 / Math.PI);
-            return (int)angle; 
-        } 
-
-        //::::::Method to save de media and the desviation standar, delate when the binarization its over. 
-
-        private void saveStatictics(int frames, double Media, double stdes, double cv, double izq, double der)
-        {
-            using (StreamWriter file = new StreamWriter(path2+"Statistics.txt", true))
-            {
-                file.Write(frames + " ");
-                file.Write(Media.ToString() + " "); 
-                file.Write(stdes.ToString() + " ");
-                file.Write(cv.ToString() + " ");
-                file.Write(izq.ToString() + " ");
-                file.Write(der.ToString() + " "); 
-                file.Write(Environment.NewLine); 
-            }        
-        }//end saveStatictics
-        
+ 
 
     }//end class
 }//end namespace
