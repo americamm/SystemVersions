@@ -24,9 +24,6 @@ namespace SystemV1
         private double convexHullArea;
         private double convexHullPerimeter;
 
-        private double resizeInt = 0.5;
-        private double scale = 1; 
-
         //Save the frames to check the noise remove in the roi, also check the bnarization 
         private string path1 = @"C:\SystemTest\V8\Test2\Front\Convex\";
         private string path2 = @"C:\SystemTest\V8\Test2\";
@@ -182,8 +179,6 @@ namespace SystemV1
             BinaryImage = frame.Copy(Roi);
             //BinaryImage.Save(path1 + numFrames.ToString() + ".png");
 
-            //BinaryImage = BinaryImage.Resize(resizeInt, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR);
-
             frameImagePtr= BinaryImage; 
 
             IntPtr framePtr = frameImagePtr.Ptr;
@@ -225,8 +220,10 @@ namespace SystemV1
                     defects = biggestContour.GetConvexityDefacts(storage, Emgu.CV.CvEnum.ORIENTATION.CV_COUNTER_CLOCKWISE);
                     defectsArray = defects.ToArray();
 
-                    box = biggestContour.GetMinAreaRect();
+                    box = biggestContour.GetMinAreaRect(); 
                     points = box.GetVertices();
+
+                    CircleF centerBox = box.center(); 
 
                     contourArea = result2;
                     contourPerimeter = biggestContour.Perimeter;
@@ -234,7 +231,9 @@ namespace SystemV1
                     convexHullPerimeter = Hull.Perimeter;
 
                     BinaryImage.Draw(Hull, new Gray(155), 1);
-                    //ABinaryImage.Save(path1 + "ConvexHull_" + numFrames.ToString() + ".png");
+                    BinaryImage.Draw(box, new Gray(100), 1);
+                    BinaryImage.Draw(box.center(), new Gray(200), 1); 
+                    BinaryImage.Save(path1 + "ConvexHull_" + numFrames.ToString() + ".png");
 
                     ListReturn = GetFingersHand(BinaryImage);
                     ListReturn.Add(contourPerimeter);
@@ -264,10 +263,10 @@ namespace SystemV1
 
             for (int i = 0; i < defects.Total; i++)
             {
-                startPoints[i] = new PointF((float)((defectsArray[i].StartPoint.X)*scale), (float)((defectsArray[i].StartPoint.Y)*2));
-                depthPoints[i] = new PointF((float)((defectsArray[i].DepthPoint.X)*scale), (float)((defectsArray[i].DepthPoint.Y)*2));
+                startPoints[i] = new PointF((float)defectsArray[i].StartPoint.X, (float)defectsArray[i].StartPoint.Y);
+                depthPoints[i] = new PointF((float)defectsArray[i].DepthPoint.X, (float)defectsArray[i].DepthPoint.Y);
 
-                DistanceDepth[i] = (defectsArray[i].Depth)*scale;
+                DistanceDepth[i] = defectsArray[i].Depth;
 
                 CircleF startCircle = new CircleF(startPoints[i], 5f);
                 CircleF depthCircle = new CircleF(depthPoints[i], 5f);
