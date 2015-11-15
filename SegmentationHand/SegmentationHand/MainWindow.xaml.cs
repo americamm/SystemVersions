@@ -331,8 +331,9 @@ namespace SegmentationHand
             PointF[] PositionFingerTips = new PointF[5];
             PointF[] PositionRootFinger = new PointF[5]; 
             int[] anglesFingertipsCenter = new int[5]; 
-            int[] indexDepth = new int[5];  
-            
+            int[] indexDepth = new int[5];
+            PointF[] positiondepthmid = new PointF[12];
+   
 
             for (int i = 0; i < defects.Total; i++)
             {
@@ -346,9 +347,11 @@ namespace SegmentationHand
                 CircleF startCircle = new CircleF(startPoint, 3f);
                 CircleF depthCircle = new CircleF(depthPoint, 3f);
                 CircleF endCircle = new CircleF(endPoint, 3f);
-                
-                PositionDepth[i] = depthPoint; 
-                
+
+                HandSegmentation.Draw(startCircle, new Gray(40), 4);
+
+                PositionDepth[i] = depthPoint;
+
                 //Custom heuristic based on some experiment, double check it before use
                 if ((startCircle.Center.Y < box.center.Y || depthCircle.Center.Y < box.center.Y) && (startCircle.Center.Y < depthCircle.Center.Y) && (Math.Sqrt(Math.Pow(startCircle.Center.X - depthCircle.Center.X, 2) + Math.Pow(startCircle.Center.Y - depthCircle.Center.Y, 2)) > box.size.Height / 6.5))
                 { 
@@ -357,6 +360,7 @@ namespace SegmentationHand
                     indexDepth[fingerNum - 1] = i; 
                     HandSegmentation.Draw(depthCircle, new Gray(110), 2);
                     HandSegmentation.Draw(startCircle, new Gray(80), 2);
+                    positiondepthmid[fingerNum - 1] = depthPoint; 
                 }  
                 
             }
@@ -368,8 +372,8 @@ namespace SegmentationHand
                 file.Write(Environment.NewLine); 
             } 
 
-            //MCvBox2D caja = Emgu.CV.PointCollection.MinAreaRect(PositionDepth);
-            //HandSegmentation.Draw(caja, new Gray(50), 3); 
+            
+            HandSegmentation.Draw(box, new Gray(50), 2); 
 
             CircleF centerBoxDraw = new CircleF(box.center, 4f);
             HandSegmentation.Draw(centerBoxDraw, new Gray(100), 2);
@@ -386,28 +390,21 @@ namespace SegmentationHand
                     anglesFingertipsCenter[j] = getAngleCenterFinger(PositionFingerTips[j], box.center); 
 
                     //Get the root of the fingers:::::::::::::::::::::::::::
-                    if (indexDepth[0] == 0)
+                    if (j == 0 && indexDepth[j] == 0) 
                     {
-                        indexActual = indexDepth[j];
+                        indexActual = 0;
                         indexPrevous = numDefects - 1;
                     }
                     else
                     {
-                        /*if (fingerNum == 1)
-                        {
-                            indexActual = indexDepth[j];
-                            indexPrevous = indexActual - 1;
-                        }*/
                         indexActual = indexDepth[j];
                         indexPrevous = indexActual - 1;
-
-                        int a = 0;
                     } 
 
-                    //PositionRootFinger[j] = getFingerRoot(PositionDepth[indexActual], PositionDepth[indexPrevous]);
+                    PositionRootFinger[j] = getFingerRoot(PositionDepth[indexActual], PositionDepth[indexPrevous]);
 
-                    //CircleF midPoint = new CircleF(PositionRootFinger[j], 3f);
-                    //HandSegmentation.Draw(midPoint, new Gray(60), 2); 
+                    CircleF midPoint = new CircleF(PositionRootFinger[j], 3f);
+                    HandSegmentation.Draw(midPoint, new Gray(60), 2); 
                 }
             }
 

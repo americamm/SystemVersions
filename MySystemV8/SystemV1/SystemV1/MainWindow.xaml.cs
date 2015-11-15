@@ -56,8 +56,8 @@ namespace SystemV1
         public int numFrames = 3;
         private int numFrameHandDetected = 1;
         //Escribir el archivito de las caracteristicas.
-        private string pathFront = @"C:\SystemTest\V8\Test1\Front\Input\";
-        private string pathSide = @"C:\SystemTest\V8\Test1\Side\Input\"; 
+        private string pathFront = @"C:\SystemTest\V8\Test2\Front\Input\";
+        private string pathSide = @"C:\SystemTest\V8\Test2\Side\Input\"; 
         //private string pathData = @"C:\SystemTest\V7\Test3";
         //private string pathTF = @"C:\CaptureGestures\90L\Alma\2\Test\Front\";
         //private string pathTS = @"C:\CaptureGestures\90L\Alma\2\Test\Side\"; 
