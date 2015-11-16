@@ -53,14 +53,10 @@ namespace SystemV1
         //para contar los cuadros por segundo 
         public int fps = 1;
         public int sec = 1;
-        public int numFrames = 3;
-        private int numFrameHandDetected = 1;
+        public int numFrames = 1;
         //Escribir el archivito de las caracteristicas.
-        private string pathFront = @"C:\SystemTest\V9\Test1\Front\Input\";
-        private string pathSide = @"C:\SystemTest\V9\Test1\Side\Input\"; 
-        //private string pathData = @"C:\SystemTest\V7\Test3";
-        //private string pathTF = @"C:\CaptureGestures\90L\Alma\2\Test\Front\";
-        //private string pathTS = @"C:\CaptureGestures\90L\Alma\2\Test\Side\"; 
+        private string pathFront = @"C:\Gestures\90L\G1\Front\";
+        private string pathSide = @"C:\Gestures\90L\G1\Side\"; 
         //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         
         
@@ -119,9 +115,9 @@ namespace SystemV1
             //-------------------------------------------------------------------------------
 
             //-------------------------------------------------------------------------------
-            //Get actual frame and the next frame. To delate the frames with positive falses.  
-            imagenKinectGray1 = new Image<Gray, byte>(pathFront + "Front" + "_" + numFrames.ToString() + "_1_1" + ".png"); //Poner el folder
-            imagenKinectGray2 = new Image<Gray, byte>(pathSide + "Side" + "_" + numFrames.ToString() + "_1_1" + ".png"); 
+            //Get actual frame.  
+            imagenKinectGray1 = new Image<Gray, byte>(pathFront + "Front ("+ numFrames.ToString() + ").png"); //Poner el folder
+            imagenKinectGray2 = new Image<Gray, byte>(pathSide + "Side (" + numFrames.ToString() +").png"); 
 
             returnHandDetectorFrontActual = HandDetection.Detection(imagenKinectGray1, positionCenterHandF);
             returnHandDetectorSideActual = HandDetection.Detection(imagenKinectGray2, positionCenterHandS);
@@ -194,10 +190,9 @@ namespace SystemV1
                 }
             }
 
-            SaveFeaturesText.FeaturesTwoKTest(1, returnGettingSegK1, returnGettingSegK2, pathFront + "Clasificar2Features.txt");
-            SaveFeaturesText.FeaturesOneTest(1, returnGettingSegK1, pathFront + "Clasificar1feature.txt");
+            SaveFeaturesText.FeaturesTwoKTest(2, returnGettingSegK1, returnGettingSegK2, pathFront + "Training2Features.txt");
+            SaveFeaturesText.FeaturesOneTest(2, returnGettingSegK1, pathFront + "Training1feature.txt");
             
-
             DepthImageK1.Source = imagetoWriteablebitmap(imagenKinectGray1);
             DepthImageK2.Source = imagetoWriteablebitmap(imagenKinectGray2); 
 

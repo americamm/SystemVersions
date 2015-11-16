@@ -21,7 +21,7 @@ namespace SystemV1
         private PointF[] points;
 
         //Save the frames to check the noise remove in the roi, also check the bnarization 
-        private string path1 = @"C:\SystemTest\V9\Test1\Front\Convex\";
+        private string path1 = @"C:\Gestures\90L\G1\Convex\";
         
         private int numFrames = 1;            
         public int numero;
